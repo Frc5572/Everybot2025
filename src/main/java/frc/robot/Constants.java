@@ -28,6 +28,19 @@ public final class Constants {
      */
     public static final class Pneumatics {
     }
+    public static final class ModuleConstants {
+        public static final double kWheelDiameterMeters = null;
+        public static final double kDriveMotorGearRatio = null;
+        public static final double kTurnMotorGearRatio = null;
+        public static final double kDriveEncoderRot2Meter = null;
+        public static final double kTurnEncoderRot2Rad = null;
+        public static final double kDriveEncoderRPM2MeterPerSec = null;
+        public static final double kTurnEncoderRPM2RadPerSec = null;
+        public static final double kPTurn = null;
+        .
+
+        
+    }
 
 
 }

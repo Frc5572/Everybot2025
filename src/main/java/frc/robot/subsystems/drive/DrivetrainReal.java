@@ -1,7 +1,5 @@
 package frc.robot.subsystems.drive;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-
 /**
  * DrivetrainReal
  */
@@ -9,13 +7,18 @@ public class DrivetrainReal implements DrivetrainIO {
 
 
     /**
-     * Drivetrain Real
+     * } } Drivetrain Real
      */
+    // private AHRS gyro = new AHRS(Constants.Swerve.navXID);
+
     public DrivetrainReal() {}
 
     @Override
     public void updateInputs(DrivetrainIOInputs inputs) {
-        inputs.gyroYaw = Rotation2d.fromDegrees(0);
+        // inputs.yaw = gyro.getYaw();
+        // inptus.pitch = gyro.getPitch();
+
+
     }
 
     /**
