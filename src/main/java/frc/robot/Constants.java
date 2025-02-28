@@ -1,5 +1,8 @@
 package frc.robot;
 
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 /**
  * Constants file.
  */
@@ -23,24 +26,41 @@ public final class Constants {
     public static final class Motors {
     }
 
-    /**
-     * Pneumatics CAN id constants.
-     */
-    public static final class Pneumatics {
-    }
-    public static final class ModuleConstants {
-        public static final double kWheelDiameterMeters = null;
-        public static final double kDriveMotorGearRatio = null;
-        public static final double kTurnMotorGearRatio = null;
-        public static final double kDriveEncoderRot2Meter = null;
-        public static final double kTurnEncoderRot2Rad = null;
-        public static final double kDriveEncoderRPM2MeterPerSec = null;
-        public static final double kTurnEncoderRPM2RadPerSec = null;
-        public static final double kPTurn = null;
-        .
+    public static final class Swerve {
 
-        
-    }
+        /* Angle Motor PID Values */
+        public static final double angleKP = 5.0;
+        public static final double angleKI = 0.0;
+        public static final double angleKD = 0.0;
 
+        /* Drive Motor PID Values */
+        public static final double driveKP = 0.0;
+        public static final double driveKI = 0.0;
+        public static final double driveKD = 0.0;
+        public static final double driveKF = 0.0;
+
+
+        public static final double angleMinOutput = -1;
+        public static final double angleMaxOutput = 1;
+
+
+        /* Module Gear Ratios */
+        public static final double driveGearRatio = (4.40 / 1.0); // X2_16
+        public static final double angleGearRatio = (1.0 / 41.25); // (150 / 7) : 1
+
+        /* Motor Inverts */
+        public static final InvertedValue angleMotorInvert = InvertedValue.Clockwise_Positive;
+        public static final InvertedValue driveMotorInvert =
+            InvertedValue.CounterClockwise_Positive;
+
+        /* Angle Encoder Invert */
+        public static final SensorDirectionValue cancoderInvert =
+            SensorDirectionValue.CounterClockwise_Positive;
+
+
+        public static final double wheelCircumference = wheelDiameter * Math.PI;
+        public static final double maxSpeed = 0.0;
+
+    }
 
 }

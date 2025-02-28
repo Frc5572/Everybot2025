@@ -1,5 +1,6 @@
-package frc.robot.subsystems.SwerveModule;
+package frc.lib.util.swerve;
 
+import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,30 +16,20 @@ public class SwerveModule {
     private SwerveModuleIO io;
     private SwerveModuleInputsAutoLogged inputs = new SwerveModuleInputsAutoLogged();
 
-    /*
-     * private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(
-     * Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
-     * 
-     * drive motor control requests
-     * 
-     * 
-     * private final DutyCycleOut driveDutyCycle = new DutyCycleOut(0); private final
-     * VelocityVoltage driveVelocity = new VelocityVoltage(0);
-     */
 
-    public SwerveModule(int moduleNum, int driveMotorID, int angleMotorID, int cancoderID, Rotation2d angleOffset, SwerveModuleIO io) {
+
+    public SwerveModule(int moduleNum, int driveMotorID, int angleMotorID, int cancoderID,
         Rotation2d angleOffset, SwerveModuleIO io) {
         this.io = io;
 
-        this.moduleNum= moduleNum;
+        this.moduleNum = moduleNum;
 
         this.angleOffset = angleOffset;
 
         io.updateInputs(inputs);
         try {
             Thread.sleep(2000);
-        }
-        catch(InterruptedException e){
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();;
         }
         resetToAbsolute();
@@ -57,20 +48,12 @@ public class SwerveModule {
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
-        if (isOpenLoop) {
-            driveDutyCycle.Output = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
-            io.setDriveMotor(driveDutyCycle);
-        } else {
-            driveVelocity.Velocity = Conversions.MetersPerSecondToRotationPerSecond(
-                desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);
-            driveVelocity.FeedForward =
-                driveFeedForward.calculate(desiredState.speedMetersPerSecond);
-            io.setDriveMotor(driveVelocity);
-        }
+
+        io.setDriveMotor(desiredState.speedMetersPerSecond * Constants.Swerve.wheelCircumference);
     }
 
     public Rotation2d getCANcoder() {
-        returnRotation2d.fromRotations(inputs.absolutePositionAngleEncoder.in(Rotations));
+        return Rotation2d.fromRotations(inputs.absolutePositionAngleEncoder.in(Rotations));
     }
 
     public void resetToAbsolute() {
@@ -81,7 +64,7 @@ public class SwerveModule {
 
     public SwerveModuleState getState() {
         return new SwerveModuleState(
-            Conversions.rotationperSecondToMetersPerSecond(
+            Conversions.rotationPerSecondToMetersPerSecond(
                 inputs.driveMotorSelectedSensorVelocity.in(RotationsPerSecond),
                 Constants.Swerve.wheelCircumference),
             Rotation2d.fromRotations(inputs.angleMotorSelectedPosition.in(Rotations)));
@@ -89,6 +72,8 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
+
+
             Conversions.rotationsToMeters(inputs.driveMotorSelectedPosition.in(Rotations),
                 Constants.Swerve.wheelCircumference),
             Rotation2d.fromRotations(inputs.angleMotorSelectedPosition.in(Rotations)));

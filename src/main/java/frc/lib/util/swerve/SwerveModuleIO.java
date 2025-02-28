@@ -1,7 +1,6 @@
-package frc.robot.subsystems.SwerveModule;
+package frc.lib.util.swerve;
 
 import org.littletonrobotics.junction.AutoLog;
-import com.ctre.phoenix6.controls.ControlRequest;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 
@@ -18,7 +17,7 @@ public interface SwerveModuleIO {
 
     public default void updateInputs(SwerveModuleInputs inputs) {}
 
-    public default void setDriveMotor(ControlRequest request) {}
+    public default void setDriveMotor(double v) {}
 
     public default void setAngleMotor(double v) {}
 
