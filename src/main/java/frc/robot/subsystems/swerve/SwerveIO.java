@@ -1,6 +1,7 @@
 package frc.robot.subsystems.swerve;
 
 import java.util.Optional;
+import org.littletonrobotics.junction.AutoLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.lib.util.swerve.SwerveModule;
@@ -8,6 +9,7 @@ import frc.lib.util.swerve.SwerveModuleIO;
 
 public interface SwerveIO {
 
+    @AutoLog
     public static class SwerveInputs {
         public float yaw;
         public float roll;

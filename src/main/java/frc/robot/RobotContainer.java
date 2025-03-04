@@ -2,6 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +22,7 @@ import frc.robot.subsystems.swerve.SwerveReal;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+    public static ShuffleboardTab mainDriverTab = Shuffleboard.getTab("Main Driver");
     /* Controllers */
     private final CommandXboxController driver = new CommandXboxController(Constants.driverID);
     private final CommandXboxController operator = new CommandXboxController(Constants.operatorID);

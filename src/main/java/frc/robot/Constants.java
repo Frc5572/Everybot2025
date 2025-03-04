@@ -2,6 +2,11 @@ package frc.robot;
 
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.studica.frc.AHRS.NavXComType;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 /**
  * Constants file.
@@ -10,7 +15,7 @@ public final class Constants {
     /**
      * Stick Deadband
      */
-    public static final double stickDeadband = 0.1;
+    public static final double STICK_DEADBAND = 0.1;
     /**
      * Driver ID
      */
@@ -27,6 +32,8 @@ public final class Constants {
     }
 
     public static final class Swerve {
+
+
 
         /* Angle Motor PID Values */
         public static final double angleKP = 5.0;
@@ -58,8 +65,60 @@ public final class Constants {
             SensorDirectionValue.CounterClockwise_Positive;
 
 
+        public static final double trackWidth = Units.inchesToMeters(24.0);
+        public static final double wheelBase = Units.inchesToMeters(24.0);
+        public static final double wheelDiameter = Units.inchesToMeters(3.8);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
         public static final double maxSpeed = 0.0;
+        public static final double maxAngularVelocity = 0.0;
+
+        public static NavXComType navXID = NavXComType.kMXP_SPI;
+        public static final boolean invertGyro = true;
+
+
+        public static final SwerveDriveKinematics swerveKinematics =
+            new SwerveDriveKinematics(new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+                new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+                new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+                new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
+
+        public static final class Mod0 {
+            public static final int driveMotorID = 0;
+            public static final int angleMotorID = 0;
+            public static final int canCoderID = 0;
+            public static final Rotation2d angleOffset = null;
+
+
+        }
+
+        public static final class Mod1 {
+            public static final int driveMotorID = 0;
+            public static final int angleMotorID = 0;
+            public static final int canCoderID = 0;
+            public static final Rotation2d angleOffset = null;
+
+
+        }
+
+        public static final class Mod2 {
+            public static final int driveMotorID = 0;
+            public static final int angleMotorID = 0;
+            public static final int canCoderID = 0;
+            public static final Rotation2d angleOffset = null;
+
+
+        }
+
+        public static final class Mod3 {
+            public static final int driveMotorID = 0;
+            public static final int angleMotorID = 0;
+            public static final int canCoderID = 0;
+            public static final Rotation2d angleOffset = null;
+
+
+        }
+
+
 
     }
 
