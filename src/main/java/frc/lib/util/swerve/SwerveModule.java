@@ -48,8 +48,7 @@ public class SwerveModule {
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
-
-        io.setDriveMotor(desiredState.speedMetersPerSecond * Constants.Swerve.wheelCircumference);
+        io.setDriveMotor(desiredState.speedMetersPerSecond / Constants.Swerve.wheelCircumference);
     }
 
     public Rotation2d getCANcoder() {
@@ -72,8 +71,6 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-
-
             Conversions.rotationsToMeters(inputs.driveMotorSelectedPosition.in(Rotations),
                 Constants.Swerve.wheelCircumference),
             Rotation2d.fromRotations(inputs.angleMotorSelectedPosition.in(Rotations)));

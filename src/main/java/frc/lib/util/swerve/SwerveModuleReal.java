@@ -1,6 +1,7 @@
 package frc.lib.util.swerve;
 
 import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
@@ -28,6 +29,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
     // private SparkClosedLoopController angleController; look this up
     private CANcoder angleEncoder;
     public RelativeEncoder angleMotorEncoder;
+    public RelativeEncoder driveMotorEncoder;
     private CANcoderConfiguration swerveCANcoderConfig = new CANcoderConfiguration();
 
     private StatusSignal<Angle> absolutePositionAngleEncoder;
@@ -48,6 +50,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
         mAngleMotor = new SparkMax(angleMotorID, MotorType.kBrushless);
         angleEncoder = new CANcoder(cancoderID);
         angleMotorEncoder = mAngleMotor.getEncoder();
+        driveMotorEncoder = mDriveMotor.getEncoder();
 
         configAngleEncoder();
         configAngleMotor();
@@ -60,7 +63,8 @@ public class SwerveModuleReal implements SwerveModuleIO {
         /* Angle Motor Config */
 
         /* Motor Inverts and Neutral Mode */
-        angleconfig.inverted(false).idleMode(IdleMode.kBrake).voltageCompensation(12);
+        angleconfig.inverted(Constants.Swerve.angleMotorInvert).idleMode(IdleMode.kBrake)
+            .voltageCompensation(12);
         // /* PID Config */
         angleconfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD)
@@ -77,7 +81,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
     }
 
     private void configDriveMotor() {
-        driveconfig.inverted(true).idleMode(IdleMode.kBrake);
+        driveconfig.inverted(Constants.Swerve.driveMotorInvert).idleMode(IdleMode.kBrake);
         driveconfig.encoder.positionConversionFactor(Constants.Swerve.driveGearRatio)
             .velocityConversionFactor(Constants.Swerve.driveGearRatio);
         driveconfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -110,6 +114,9 @@ public class SwerveModuleReal implements SwerveModuleIO {
     @Override
     public void updateInputs(SwerveModuleInputs inputs) {
         BaseStatusSignal.refreshAll(absolutePositionAngleEncoder);
+        inputs.driveMotorSelectedPosition = Rotations.of(driveMotorEncoder.getPosition());
+        inputs.driveMotorSelectedSensorVelocity =
+            RotationsPerSecond.of(driveMotorEncoder.getVelocity());
         inputs.angleMotorSelectedPosition = Rotations.of(angleMotorEncoder.getPosition());
         inputs.absolutePositionAngleEncoder = absolutePositionAngleEncoder.getValue();
     }

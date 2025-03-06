@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.studica.frc.AHRS.NavXComType;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -41,7 +40,7 @@ public final class Constants {
         public static final double angleKD = 0.0;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.0;
+        public static final double driveKP = 0.02;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
@@ -51,29 +50,30 @@ public final class Constants {
         public static final double angleMaxOutput = 1;
 
 
+        public static final double trackWidth = Units.inchesToMeters(21.5);
+        public static final double wheelBase = Units.inchesToMeters(23.5);
+        public static final double wheelDiameter = Units.inchesToMeters(3.0);
+        public static final double wheelCircumference = wheelDiameter * Math.PI;
+
+
+        public static final double maxSpeed = 1.0;
+        public static final double maxAngularVelocity = 9.0;
+
+        public static NavXComType navXID = NavXComType.kMXP_SPI;
+        public static final boolean invertGyro = true;
+
+
         /* Module Gear Ratios */
         public static final double driveGearRatio = (4.40 / 1.0); // X2_16
         public static final double angleGearRatio = (1.0 / 41.25); // (150 / 7) : 1
 
         /* Motor Inverts */
-        public static final InvertedValue angleMotorInvert = InvertedValue.Clockwise_Positive;
-        public static final InvertedValue driveMotorInvert =
-            InvertedValue.CounterClockwise_Positive;
+        public static final boolean angleMotorInvert = true;
+        public static final boolean driveMotorInvert = false;
 
         /* Angle Encoder Invert */
         public static final SensorDirectionValue cancoderInvert =
             SensorDirectionValue.CounterClockwise_Positive;
-
-
-        public static final double trackWidth = Units.inchesToMeters(24.0);
-        public static final double wheelBase = Units.inchesToMeters(24.0);
-        public static final double wheelDiameter = Units.inchesToMeters(3.8);
-        public static final double wheelCircumference = wheelDiameter * Math.PI;
-        public static final double maxSpeed = 0.0;
-        public static final double maxAngularVelocity = 0.0;
-
-        public static NavXComType navXID = NavXComType.kMXP_SPI;
-        public static final boolean invertGyro = true;
 
 
         public static final SwerveDriveKinematics swerveKinematics =
@@ -83,41 +83,40 @@ public final class Constants {
                 new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
         public static final class Mod0 {
-            public static final int driveMotorID = 0;
-            public static final int angleMotorID = 0;
-            public static final int canCoderID = 0;
-            public static final Rotation2d angleOffset = null;
+            public static final int angleMotorID = 1;
+            public static final int driveMotorID = 2;
+            public static final int canCoderID = 9;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(.355713);
 
 
         }
 
         public static final class Mod1 {
-            public static final int driveMotorID = 0;
-            public static final int angleMotorID = 0;
-            public static final int canCoderID = 0;
-            public static final Rotation2d angleOffset = null;
+            public static final int angleMotorID = 3;
+            public static final int driveMotorID = 4;
+            public static final int canCoderID = 10;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(.310547);
 
 
         }
 
         public static final class Mod2 {
-            public static final int driveMotorID = 0;
-            public static final int angleMotorID = 0;
-            public static final int canCoderID = 0;
-            public static final Rotation2d angleOffset = null;
+            public static final int angleMotorID = 5;
+            public static final int driveMotorID = 6;
+            public static final int canCoderID = 11;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(-.059570);
 
 
         }
 
         public static final class Mod3 {
-            public static final int driveMotorID = 0;
-            public static final int angleMotorID = 0;
-            public static final int canCoderID = 0;
-            public static final Rotation2d angleOffset = null;
+            public static final int angleMotorID = 7;
+            public static final int driveMotorID = 8;
+            public static final int canCoderID = 12;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(.338867);
 
 
         }
-
 
 
     }
