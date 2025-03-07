@@ -1,5 +1,5 @@
 package frc.robot.subsystems.coralIntake;
 
-public class CoralIntakeReal {
+public class CoralIntakeReal implements CoralIntakeIO {
 
 }

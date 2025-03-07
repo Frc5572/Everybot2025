@@ -1,6 +1,5 @@
 package frc.robot.subsystems.coralIntake;
 
-
-public class CoralIntakeIO {
+public interface CoralIntakeIO {
 
 }

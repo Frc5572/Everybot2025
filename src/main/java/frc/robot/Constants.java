@@ -29,5 +29,31 @@ public final class Constants {
     public static final class Pneumatics {
     }
 
+    public static final class CoralIntakeConstants {
+        public final int kElevatorMotorCanId = 0;
+        public final int kArmMotorCanId = 0;
+        public final int kIntakeMotorCanId = 0;
+    }
+
+    public static final class ElevatorSetpoints {
+        public static final int kFeederStation = 0;
+        public static final int kLevel1 = 0;
+        public static final int kLevel2 = 0;
+        public static final int kLevel3 = 0;
+        public static final int kLevel4 = 0;
+    }
+
+    public static final class ArmSetpoints {
+        public static final double kFeederStation = 0;
+        public static final double kLevel1 = 0;
+        public static final double kLevel2 = 0;
+        public static final double kLevel3 = 0;
+        public static final double kLevel4 = 0;
+    }
+
+    public static final class IntakeSetpoints {
+        public static final double kForward = 0;
+        public static final double kReverse = 0;
+    }
 
 }
