@@ -28,6 +28,7 @@ public class CoralIntakeReal implements CoralIntakeIO {
 
     public void updateInputs(CoralIntakeInputs inputs) {
 
+
     }
 
     public void setCoralVoltage(double voltage) {
