@@ -68,7 +68,7 @@ public final class Constants {
         public static final double angleGearRatio = (1.0 / 41.25); // (150 / 7) : 1
 
         /* Motor Inverts */
-        public static final boolean angleMotorInvert = true;
+        public static final boolean angleMotorInvert = false;
         public static final boolean driveMotorInvert = false;
 
         /* Angle Encoder Invert */

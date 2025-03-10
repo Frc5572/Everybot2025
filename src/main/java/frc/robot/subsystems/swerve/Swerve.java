@@ -4,6 +4,7 @@ package frc.robot.subsystems.swerve;
 import java.util.Optional;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,7 +18,9 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.lib.util.swerve.SwerveModule;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -65,6 +68,24 @@ public class Swerve extends SubsystemBase {
         setModuleStates(chassisSpeeds);
     }
 
+    public Command teleOPDrive(CommandXboxController controller) {
+        return this.run(() -> {
+            double yaxis = -controller.getLeftY();
+            double xaxis = -controller.getLeftX();
+            double raxis = -controller.getRightX();
+            /* Deadbands */
+            yaxis = MathUtil.applyDeadband(yaxis, 0.1);
+            xaxis = MathUtil.applyDeadband(xaxis, 0.1);
+            xaxis *= xaxis * Math.signum(xaxis);
+            yaxis *= yaxis * Math.signum(yaxis);
+            raxis = (Math.abs(raxis) < Constants.STICK_DEADBAND) ? 0 : raxis;
+            Translation2d translation =
+                new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
+            double rotation = raxis * Constants.Swerve.maxAngularVelocity;
+            this.drive(translation, rotation, true);
+        });
+    }
+
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);;
         Logger.recordOutput("Swerve/DesiredStates", desiredStates);
@@ -77,6 +98,7 @@ public class Swerve extends SubsystemBase {
         ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(chassisSpeeds, 0.02);
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(targetSpeeds);
+        Logger.recordOutput("Swerve/Desired Module States", swerveModuleStates);
         setModuleStates(swerveModuleStates);
     }
 
@@ -89,6 +111,16 @@ public class Swerve extends SubsystemBase {
         SwerveModuleState[] states = new SwerveModuleState[swerveMods.length];
         for (SwerveModule mod : swerveMods) {
             states[mod.moduleNum] = mod.getState();
+        }
+        return states;
+    }
+
+    @AutoLogOutput(key = "Swerve/Absolute Module States")
+    public SwerveModuleState[] getAbsoluteModuleStates() {
+        SwerveModuleState[] states = new SwerveModuleState[swerveMods.length];
+        for (SwerveModule mod : swerveMods) {
+            states[mod.moduleNum] =
+                new SwerveModuleState(mod.getState().speedMetersPerSecond, mod.getCANcoder());
         }
         return states;
     }
