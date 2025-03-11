@@ -35,12 +35,13 @@ public final class Constants {
 
 
         /* Angle Motor PID Values */
-        public static final double angleKP = 5.0;
+        public static final double angleKP = 3.0;
         public static final double angleKI = 0.0;
         public static final double angleKD = 0.0;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.02;
+
+        public static final double driveKP = 0.01;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
@@ -69,7 +70,7 @@ public final class Constants {
 
         /* Motor Inverts */
         public static final boolean angleMotorInvert = false;
-        public static final boolean driveMotorInvert = false;
+        public static final boolean driveMotorInvert = true;
 
         /* Angle Encoder Invert */
         public static final SensorDirectionValue cancoderInvert =
@@ -82,6 +83,9 @@ public final class Constants {
                 new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
                 new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
+        /**
+         * Front Left Module
+         */
         public static final class Mod0 {
             public static final int angleMotorID = 1;
             public static final int driveMotorID = 2;
@@ -91,6 +95,9 @@ public final class Constants {
 
         }
 
+        /**
+         * Front Right Module
+         */
         public static final class Mod1 {
             public static final int angleMotorID = 3;
             public static final int driveMotorID = 4;
@@ -100,6 +107,9 @@ public final class Constants {
 
         }
 
+        /**
+         * Back Left Module
+         */
         public static final class Mod2 {
             public static final int angleMotorID = 5;
             public static final int driveMotorID = 6;

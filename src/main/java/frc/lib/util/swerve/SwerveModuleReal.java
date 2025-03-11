@@ -1,7 +1,7 @@
 package frc.lib.util.swerve;
 
+import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Rotations;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
 import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
@@ -115,8 +115,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
     public void updateInputs(SwerveModuleInputs inputs) {
         BaseStatusSignal.refreshAll(absolutePositionAngleEncoder);
         inputs.driveMotorSelectedPosition = Rotations.of(driveMotorEncoder.getPosition());
-        inputs.driveMotorSelectedSensorVelocity =
-            RotationsPerSecond.of(driveMotorEncoder.getVelocity());
+        inputs.driveMotorSelectedSensorVelocity = RPM.of(driveMotorEncoder.getVelocity());
         inputs.angleMotorSelectedPosition = Rotations.of(angleMotorEncoder.getPosition());
         inputs.absolutePositionAngleEncoder = absolutePositionAngleEncoder.getValue();
     }

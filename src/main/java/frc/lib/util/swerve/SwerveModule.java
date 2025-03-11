@@ -48,7 +48,9 @@ public class SwerveModule {
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
-        io.setDriveMotor(desiredState.speedMetersPerSecond / Constants.Swerve.wheelCircumference);
+        io.setDriveMotor(
+            Conversions.metersPerSecondToRotationPerSecond(desiredState.speedMetersPerSecond,
+                Constants.Swerve.wheelCircumference) * 60); /* per second? */
     }
 
     public Rotation2d getCANcoder() {
