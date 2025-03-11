@@ -2,8 +2,8 @@ package frc.robot.subsystems.coralIntake;
 
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class CoralIntake extends SubsystemBase {
     private CoralIntakeIO io;
@@ -28,13 +28,11 @@ public class CoralIntake extends SubsystemBase {
     }
 
     public Command runCoralIntake() {
-        return motorStartEndCommand(Constants.CoralSubsystemConstants.INTAKE_VOLTAGE);
-
+        return Commands.runEnd(() -> setCoralVoltage(6), () -> setCoralVoltage(0));
     }
 
     public Command runCoralOuttake() {
-        return motorStartEndCommand(Constants.CoralSubsystemConstants.OUTTAKE_VOLTAGE);
-
+        return Commands.runEnd(() -> setCoralVoltage(-6), () -> setCoralVoltage(0));
     }
 
 

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
+import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.drive.Drivetrain;
 import frc.robot.subsystems.drive.DrivetrainIO;
 import frc.robot.subsystems.drive.DrivetrainReal;
@@ -29,6 +30,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private Drivetrain drivetrain;
+    private CoralIntake coralintake;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -74,5 +76,10 @@ public class RobotContainer {
                 autocommand = new InstantCommand();
         }
         return autocommand;
+    }
+
+    public void configureOperatorBinds() {
+        operator.leftTrigger().whileTrue(coralintake.runCoralIntake());
+        operator.rightTrigger().whileTrue(coralintake.runCoralOuttake());
     }
 }
