@@ -82,8 +82,8 @@ public class SwerveModuleReal implements SwerveModuleIO {
 
     private void configDriveMotor() {
         driveconfig.inverted(Constants.Swerve.driveMotorInvert).idleMode(IdleMode.kBrake);
-        driveconfig.encoder.positionConversionFactor(Constants.Swerve.driveGearRatio)
-            .velocityConversionFactor(Constants.Swerve.driveGearRatio);
+        driveconfig.encoder.positionConversionFactor(1.0 / Constants.Swerve.driveGearRatio)
+            .velocityConversionFactor(1.0 / Constants.Swerve.driveGearRatio);
         driveconfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);
         this.driveController = mDriveMotor.getClosedLoopController();
