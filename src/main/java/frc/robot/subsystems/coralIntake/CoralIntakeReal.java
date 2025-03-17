@@ -1,5 +1,6 @@
 package frc.robot.subsystems.coralIntake;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -7,43 +8,47 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import frc.robot.Constants.CoralSubsystemConstants;
+import frc.robot.Constants;
 
 public class CoralIntakeReal implements CoralIntakeIO {
 
-    private SparkMax intakeMotor =
-        new SparkMax(CoralSubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
-    private SparkMax coralWristMotor =
-        new SparkMax(CoralSubsystemConstants.kcoralWristMotorCanId, MotorType.kBrushless);
-    private RelativeEncoder coralWristEncoder = coralWristMotor.getEncoder();
+    public SparkMax intakeMotor =
+        new SparkMax(Constants.CoralSubsystem.kIntakeMotorCanId, MotorType.kBrushless);
+    public SparkMax coralWristMotor =
+        new SparkMax(Constants.CoralSubsystem.kcoralWristMotorCanId, MotorType.kBrushless);
+    public RelativeEncoder coralWristEncoder = coralWristMotor.getEncoder();
 
+    public AbsoluteEncoder coralWristAbsoluteEncoder = coralWristMotor.getAbsoluteEncoder();
 
-
-    private SparkMaxConfig intakeconfig = new SparkMaxConfig();
-    private SparkMaxConfig coralWristMotorconfig = new SparkMaxConfig();
+    public SparkMaxConfig intakeconfig = new SparkMaxConfig();
+    public SparkMaxConfig coralWristMotorconfig = new SparkMaxConfig();
 
 
 
     public CoralIntakeReal() {
         coralWristMotorconfig.idleMode(IdleMode.kBrake);
+        coralWristMotorconfig.encoder.positionConversionFactor(1);
         coralWristMotor.configure(coralWristMotorconfig, ResetMode.kNoResetSafeParameters,
             PersistMode.kPersistParameters);
+
         intakeconfig.idleMode(IdleMode.kBrake);
         intakeMotor.configure(intakeconfig, ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
-
-        armEncoder.setPosition(0);
     }
 
     // what do I update?
 
     public void updateInputs(CoralIntakeInputs inputs) {
-
+        inputs.coralWristAbsoluteEncoderRawValue = coralWristAbsoluteEncoder.getPosition();
 
     }
 
     public void setCoralVoltage(double voltage) {
         intakeMotor.setVoltage(voltage);
+    }
+
+    public void setWristVolatage(double voltage) {
+        coralWristMotor.setVoltage(voltage);
     }
 
 

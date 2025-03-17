@@ -29,12 +29,16 @@ public final class Constants {
     public static final class Pneumatics {
     }
 
-    public static final class CoralSubsystemConstants {
+    public static final class CoralSubsystem {
         public static final int kWristMotorCanId = 0;
         public static final int kIntakeMotorCanId = 0;
         public static final int kcoralWristMotorCanId = 0;
         public static final double INTAKE_VOLTAGE = 0.0;
         public static final double OUTTAKE_VOLTAGE = 0.0;
+
+        public static final int WristPID_KP = 0;
+        public static final int WristPID_KI = 0;
+        public static final int WristPID_KD = 0;
 
     }
 

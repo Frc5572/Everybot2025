@@ -7,11 +7,14 @@ public interface CoralIntakeIO {
     @AutoLog
     public static class CoralIntakeInputs {
         public AngularVelocity coralRPM;
+        public double coralWristAbsoluteEncoderRawValue;
 
     }
 
     public default void updateInputs(CoralIntakeInputs inputs) {}
 
     public default void setCoralVoltage(double Voltage) {}
+
+    public default void setWristVolatage(double voltage) {}
 
 }
