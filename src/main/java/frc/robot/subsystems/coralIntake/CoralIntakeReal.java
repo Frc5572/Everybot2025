@@ -37,16 +37,18 @@ public class CoralIntakeReal implements CoralIntakeIO {
     }
 
     // what do I update?
-
+    @Override
     public void updateInputs(CoralIntakeInputs inputs) {
         inputs.coralWristAbsoluteEncoderRawValue = coralWristAbsoluteEncoder.getPosition();
 
     }
 
+    @Override
     public void setCoralVoltage(double voltage) {
         intakeMotor.setVoltage(voltage);
     }
 
+    @Override
     public void setWristVolatage(double voltage) {
         coralWristMotor.setVoltage(voltage);
     }

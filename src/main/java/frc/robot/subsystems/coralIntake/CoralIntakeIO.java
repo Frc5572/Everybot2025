@@ -8,6 +8,8 @@ public interface CoralIntakeIO {
     public static class CoralIntakeInputs {
         public AngularVelocity coralRPM;
         public double coralWristAbsoluteEncoderRawValue;
+        public double wristMotorVoltage;
+        public double wristMotorAmp;
 
     }
 

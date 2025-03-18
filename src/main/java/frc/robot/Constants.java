@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+
 /**
  * Constants file.
  */
@@ -39,6 +41,9 @@ public final class Constants {
         public static final int WristPID_KP = 0;
         public static final int WristPID_KI = 0;
         public static final int WristPID_KD = 0;
+        public static final Rotation2d AMP_ANGLE = Rotation2d.fromDegrees(0);
+        public static final double WRIST_LOWPASS = 1;
+
 
     }
 

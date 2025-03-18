@@ -38,13 +38,13 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Wait 1 Second", "wait");
         switch (runtimeType) {
             case kReal:
-                drivetrain = new Drivetrain(new DrivetrainReal());
+                // drivetrain = new Drivetrain(new DrivetrainReal());
                 break;
             case kSimulation:
                 // drivetrain = new Drivetrain(new DrivetrainSim() {});
                 break;
             default:
-                drivetrain = new Drivetrain(new DrivetrainIO() {});
+                // drivetrain = new Drivetrain(new DrivetrainIO() {});
         }
         // Configure the button bindings
         configureButtonBindings();
