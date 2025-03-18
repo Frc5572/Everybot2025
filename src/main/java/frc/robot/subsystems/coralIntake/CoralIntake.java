@@ -62,6 +62,22 @@ public class CoralIntake extends SubsystemBase {
         io.setCoralVoltage(voltage);
     }
 
+    public Rotation2d getWristAngleMeasurement() {
+        return Rotation2d.fromRotations(
+            Constants.ElevatorWristConstants.WRIST_M * inputs.wristAbsoluteEncRawValue
+                + Constants.ElevatorWristConstants.WRIST_B);
+    }
+
+    public Rotation2d getWristAngle() {
+        return Rotation2d.fromRotations(estimatedWristAngle);
+    }
+
+    public void setWristAngle(Rotation2d angle) {
+        wristPIDController.setSetpoint(angle.getRotations());
+        wristProfiledPIDController.setSetpoint(angle.getRotations());
+        pidEnabled = true;
+    }
+
     public Command runCoralIntake() {
         return Commands.runEnd(() -> setCoralVoltage(6), () -> setCoralVoltage(0));
     }
