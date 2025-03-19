@@ -6,7 +6,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 public interface CoralIntakeIO {
     @AutoLog
     public static class CoralIntakeInputs {
-        public AngularVelocity coralRPM;
+        public AngularVelocity coralVelocity;
         public double coralWristAbsoluteEncoderRawValue;
         public double wristMotorVoltage;
         public double wristMotorAmp;

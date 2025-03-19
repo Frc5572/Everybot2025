@@ -1,8 +1,9 @@
 package frc.robot.subsystems.coralIntake;
 
 import org.littletonrobotics.junction.Logger;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,14 +16,10 @@ public class CoralIntake extends SubsystemBase {
     private CoralIntakeInputsAutoLogged inputs = new CoralIntakeInputsAutoLogged();
     private CommandXboxController operator;
 
-    private boolean pidEnabled = false;
 
-    PIDController wristPIDController = new PIDController(Constants.CoralSubsystem.WristPID_KP,
-        Constants.CoralSubsystem.WristPID_KI, Constants.CoralSubsystem.WristPID_KD);
-
-    PIDController wristProfiledPIDController =
-        new PIDController(Constants.CoralSubsystem.WristPID_KP,
-            Constants.CoralSubsystem.WristPID_KI, Constants.CoralSubsystem.WristPID_KD);
+    ProfiledPIDController wristPIDController = new ProfiledPIDController(
+        Constants.CoralSubsystem.WristPID_KP, Constants.CoralSubsystem.WristPID_KI,
+        Constants.CoralSubsystem.WristPID_KD, new TrapezoidProfile.Constraints(0, 0));
 
     private double estimatedWristAngle = 0;
 
@@ -30,11 +27,9 @@ public class CoralIntake extends SubsystemBase {
     public CoralIntake(CoralIntakeIO io) {
         this.io = io;
         io.updateInputs(inputs);
-        estimatedWristAngle = getWristAngleMeasurement().getRotations();
-        wristPIDController.setSetpoint(Constants.CoralSubsystem.AMP_ANGLE.getRotations());
+        estimatedWristAngle = getWristAngle().getRotations();
         wristPIDController.setTolerance(Rotation2d.fromDegrees(0).getRotations());
         wristPIDController.setIZone(Rotation2d.fromDegrees(0).getRotations());
-        wristProfiledPIDController.setIZone(Rotation2d.fromDegrees(0).getRotations());
 
 
 
@@ -44,14 +39,11 @@ public class CoralIntake extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Coral", inputs);
+        wristPIDController.setGoal(Constants.CoralSubsystem.AMP_ANGLE.getRotations());
 
-        estimatedWristAngle = estimatedWristAngle * (2.0 - Constants.CoralSubsystem.WRIST_LOWPASS)
-            + getWristAngleMeasurement().getRotations() * Constants.CoralSubsystem.WRIST_LOWPASS;
-        wristProfiledPIDController.setSetpoint(wristPIDController.getSetpoint());
+        Rotation2d wristAngle = getWristAngle();
 
-        Rotation2d calculatedWristAngle = getWristAngle();
-
-        double wristPIDValue = wristPIDController.calculate(calculatedWristAngle.getRotations());
+        double wristPIDValue = wristPIDController.calculate(wristAngle.getRotations());
 
 
 
@@ -62,20 +54,13 @@ public class CoralIntake extends SubsystemBase {
         io.setCoralVoltage(voltage);
     }
 
-    public Rotation2d getWristAngleMeasurement() {
-        return Rotation2d.fromRotations(
-            Constants.ElevatorWristConstants.WRIST_M * inputs.wristAbsoluteEncRawValue
-                + Constants.ElevatorWristConstants.WRIST_B);
-    }
 
     public Rotation2d getWristAngle() {
         return Rotation2d.fromRotations(estimatedWristAngle);
     }
 
     public void setWristAngle(Rotation2d angle) {
-        wristPIDController.setSetpoint(angle.getRotations());
-        wristProfiledPIDController.setSetpoint(angle.getRotations());
-        pidEnabled = true;
+        wristPIDController.setGoal(angle.getRotations());
     }
 
     public Command runCoralIntake() {
@@ -86,5 +71,9 @@ public class CoralIntake extends SubsystemBase {
         return Commands.runEnd(() -> setCoralVoltage(-6), () -> setCoralVoltage(0));
     }
 
+
+    public Command runCoralWristManually(CommandXboxController controller) {
+
+    }
 
 }
