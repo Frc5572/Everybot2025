@@ -81,7 +81,7 @@ public class Swerve extends SubsystemBase {
             raxis = (Math.abs(raxis) < Constants.STICK_DEADBAND) ? 0 : raxis;
             Translation2d translation =
                 new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
-            double rotation = raxis * Constants.Swerve.maxAngularVelocity;
+            double rotation = -raxis * Constants.Swerve.maxAngularVelocity;
             this.drive(translation, rotation, true);
         });
     }

@@ -41,7 +41,7 @@ public final class Constants {
 
         /* Drive Motor PID Values */
 
-        public static final double driveKP = 0.0005;
+        public static final double driveKP = 0.001;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
@@ -57,7 +57,7 @@ public final class Constants {
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
 
-        public static final double maxSpeed = 1.0;
+        public static final double maxSpeed = 4.0;
         public static final double maxAngularVelocity = 9.0;
 
         public static NavXComType navXID = NavXComType.kMXP_SPI;
