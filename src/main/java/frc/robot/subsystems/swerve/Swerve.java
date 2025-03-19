@@ -25,6 +25,9 @@ import frc.lib.util.swerve.SwerveModule;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
+/**
+ * Swerve
+ */
 public class Swerve extends SubsystemBase {
     public SwerveDrivePoseEstimator swerveOdometry;
     public SwerveModule[] swerveMods;
@@ -34,6 +37,11 @@ public class Swerve extends SubsystemBase {
     private SwerveIO swerveIO;
     private boolean hasInitialized = false;
 
+    /**
+     * Swerve Constructor
+     * 
+     * @param swerveIO IO for the Swerve
+     */
     public Swerve(SwerveIO swerveIO) {
         this.swerveIO = swerveIO;
         fieldOffset = getGyroYaw().getDegrees();

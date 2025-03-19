@@ -20,39 +20,6 @@ public class Conversions {
         return wheelMeters;
     }
 
-    /**
-     * @param velocityCounts Falcon Velocity Counts
-     * @param gearRatio Gear Ratio between Falcon and Mechanism (set to 1 for Falcon RPM)
-     * @return RPM of Mechanism
-     */
-
-
-    /**
-     * 
-     * 
-     * /**
-     * 
-     * @param counts Falcon Counts
-     * @param gearRatio Gear Ratio between Falcon and Mechanism
-     * @param circumference Circumference of Wheel
-     * @return Degrees of Rotation of Mechanism falconToDegrees
-     */
-
-    /**
-     * @param velocitycounts Falcon Velocity Counts
-     * @param circumference Circumference of Wheel
-     * @param gearRatio Gear Ratio between Falcon and Mechanism (set to 1 for Falcon RPM)
-     * @return Falcon Velocity Counts
-     */
-
-
-    /**
-     * @param velocity Velocity MPS
-     * @param circumference Circumference of Wheel
-     * @param gearRatio Gear Ratio between Falcon and Mechanism (set to 1 for Falcon RPM)
-     * @return Falcon Velocity Counts
-     */
-
 
     /**
      * Normalize angle to between 0 to 360

@@ -9,6 +9,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.math.Conversions;
 import frc.robot.Constants;
 
+/**
+ * Swerve Module
+ */
 public class SwerveModule {
     public int moduleNum;
     private Rotation2d angleOffset;
@@ -16,8 +19,16 @@ public class SwerveModule {
     private SwerveModuleIO io;
     private SwerveModuleInputsAutoLogged inputs = new SwerveModuleInputsAutoLogged();
 
-
-
+    /**
+     * Constructor for the Swerve Module
+     * 
+     * @param moduleNum Number of the Module
+     * @param driveMotorID ID for the drive motor
+     * @param angleMotorID ID for the angle motor
+     * @param cancoderID ID for the CANcoder
+     * @param angleOffset Angle offset for the module
+     * @param io IO of the Swerve
+     */
     public SwerveModule(int moduleNum, int driveMotorID, int angleMotorID, int cancoderID,
         Rotation2d angleOffset, SwerveModuleIO io) {
         this.io = io;

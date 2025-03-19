@@ -22,11 +22,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import frc.robot.Constants;
 
+/**
+ * Swerve Module Real
+ */
 public class SwerveModuleReal implements SwerveModuleIO {
 
     private SparkMax mDriveMotor;
     private SparkMax mAngleMotor;
-    // private SparkClosedLoopController angleController; look this up
     private CANcoder angleEncoder;
     public RelativeEncoder angleMotorEncoder;
     public RelativeEncoder driveMotorEncoder;
@@ -40,8 +42,15 @@ public class SwerveModuleReal implements SwerveModuleIO {
     private SparkClosedLoopController angleController;
     private SparkClosedLoopController driveController;
 
-
-
+    /**
+     * Swerve Module Real Constructor
+     * 
+     * @param moduleNum Module number
+     * @param driveMotorID ID of the Drive motor
+     * @param angleMotorID ID of the Angle motor
+     * @param cancoderID ID of the CANcoder
+     * @param angleOffset The offset angle of the module
+     */
     public SwerveModuleReal(int moduleNum, int driveMotorID, int angleMotorID, int cancoderID,
         Rotation2d angleOffset) {
         this.moduleNum = moduleNum;
