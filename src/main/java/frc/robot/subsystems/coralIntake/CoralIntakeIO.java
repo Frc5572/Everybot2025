@@ -15,7 +15,7 @@ public interface CoralIntakeIO {
 
     public default void updateInputs(CoralIntakeInputs inputs) {}
 
-    public default void setCoralVoltage(double Voltage) {}
+    public default void setCoralVoltage(double voltage) {}
 
     public default void setWristVolatage(double voltage) {}
 
