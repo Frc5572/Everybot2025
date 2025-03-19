@@ -21,7 +21,7 @@ public class SwerveModule {
 
     /**
      * Constructor for the Swerve Module
-     * 
+     *
      * @param moduleNum Number of the Module
      * @param driveMotorID ID for the drive motor
      * @param angleMotorID ID for the angle motor
@@ -52,6 +52,12 @@ public class SwerveModule {
         Logger.processInputs("SwerveModule" + moduleNum, inputs);
     }
 
+    /**
+     * Setting the desired state of the swerve module
+     * 
+     * @param desiredState the desired state of the swerve module
+     * @param isOpenLoop whether is open or close looped
+     */
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
         desiredState.optimize(getState().angle);
         io.setAngleMotor(desiredState.angle.getRotations());
@@ -68,12 +74,20 @@ public class SwerveModule {
         return Rotation2d.fromRotations(inputs.absolutePositionAngleEncoder.in(Rotations));
     }
 
+    /**
+     * Reset to the absolute postion
+     */
     public void resetToAbsolute() {
         double absolutePosition = getCANcoder().getRotations() - angleOffset.getRotations();
         io.setPositionAngleMotor(absolutePosition);
         inputs.angleMotorSelectedPosition = Rotations.of(absolutePosition);
     }
 
+    /**
+     * State of the swerve module
+     *
+     * @return the current state of the swerve module
+     */
     public SwerveModuleState getState() {
         return new SwerveModuleState(
             Conversions.rotationPerSecondToMetersPerSecond(
@@ -82,6 +96,11 @@ public class SwerveModule {
             Rotation2d.fromRotations(inputs.angleMotorSelectedPosition.in(Rotations)));
     }
 
+    /**
+     * The position of the swerve module
+     *
+     * @return the current postion of the module
+     */
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
             Conversions.rotationsToMeters(inputs.driveMotorSelectedPosition.in(Rotations),

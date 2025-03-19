@@ -44,7 +44,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
 
     /**
      * Swerve Module Real Constructor
-     * 
+     *
      * @param moduleNum Module number
      * @param driveMotorID ID of the Drive motor
      * @param angleMotorID ID of the Angle motor
