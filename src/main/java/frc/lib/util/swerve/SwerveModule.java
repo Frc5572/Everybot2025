@@ -75,7 +75,7 @@ public class SwerveModule {
     }
 
     /**
-     * Reset to the absolute postion
+     * Reset to the absolute position
      */
     public void resetToAbsolute() {
         double absolutePosition = getCANcoder().getRotations() - angleOffset.getRotations();
@@ -99,7 +99,7 @@ public class SwerveModule {
     /**
      * The position of the swerve module
      *
-     * @return the current postion of the module
+     * @return the current position of the module
      */
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
