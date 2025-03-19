@@ -30,6 +30,9 @@ public final class Constants {
     public static final class Motors {
     }
 
+    /**
+     * Swerve Constants
+     */
     public static final class Swerve {
 
 
@@ -119,6 +122,9 @@ public final class Constants {
 
         }
 
+        /**
+         * Back Right Module
+         */
         public static final class Mod3 {
             public static final int angleMotorID = 7;
             public static final int driveMotorID = 8;

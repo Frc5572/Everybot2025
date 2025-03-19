@@ -285,6 +285,9 @@ public class Swerve extends SubsystemBase {
         this.setMotorsZero();
     }
 
+    /**
+     * Gets a list containing all 4 swerve module positions
+     */
     public SwerveModulePosition[] getSwerveModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[swerveMods.length];
         for (SwerveModule mod : swerveMods) {
@@ -293,6 +296,11 @@ public class Swerve extends SubsystemBase {
         return positions;
     }
 
+    /**
+     * Determine whether or not to flight the auto path
+     *
+     * @return True if flip path to Red Alliance, False if Blue
+     */
     public static boolean shouldFlipPath() {
         Optional<Alliance> ally = DriverStation.getAlliance();
         if (ally.isPresent()) {

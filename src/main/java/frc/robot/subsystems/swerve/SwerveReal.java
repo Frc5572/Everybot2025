@@ -6,6 +6,9 @@ import frc.lib.util.swerve.SwerveModule;
 import frc.lib.util.swerve.SwerveModuleReal;
 import frc.robot.Constants;
 
+/**
+ * Swerve Real Class
+ */
 public class SwerveReal implements SwerveIO {
     private AHRS gyro = new AHRS(Constants.Swerve.navXID);
 

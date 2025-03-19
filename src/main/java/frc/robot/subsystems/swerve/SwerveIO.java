@@ -7,8 +7,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.lib.util.swerve.SwerveModule;
 import frc.lib.util.swerve.SwerveModuleIO;
 
+/**
+ * Swerve IO Class
+ */
 public interface SwerveIO {
 
+    /**
+     * Swerve Inputs Class
+     */
     @AutoLog
     public static class SwerveInputs {
         public float yaw;
