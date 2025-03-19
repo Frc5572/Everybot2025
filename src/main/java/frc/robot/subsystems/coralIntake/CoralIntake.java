@@ -64,7 +64,7 @@ public class CoralIntake extends SubsystemBase {
 
     public Rotation2d getWristAngleMeasurement() {
         return Rotation2d.fromRotations(
-            Constants.ElevatorWristConstants.WRIST_M * inputs.wristAbsoluteEncRawValue
+            Constants.ElevatorWristConstants.WRIST_M * inputs.coralWristAbsoluteEncoderRawValue
                 + Constants.ElevatorWristConstants.WRIST_B);
     }
 

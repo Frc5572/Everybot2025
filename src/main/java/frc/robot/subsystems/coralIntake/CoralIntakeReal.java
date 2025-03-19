@@ -36,7 +36,6 @@ public class CoralIntakeReal implements CoralIntakeIO {
             PersistMode.kPersistParameters);
     }
 
-    // what do I update?
     @Override
     public void updateInputs(CoralIntakeInputs inputs) {
         inputs.coralWristAbsoluteEncoderRawValue = coralWristAbsoluteEncoder.getPosition();
