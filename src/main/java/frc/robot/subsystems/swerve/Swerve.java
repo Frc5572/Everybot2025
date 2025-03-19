@@ -249,13 +249,6 @@ public class Swerve extends SubsystemBase {
         }
     }
 
-    /**
-     * Resets the PV Init
-     */
-    public void resetPvInitialization() {
-        hasInitialized = false;
-    }
-
     @Override
     public void periodic() {
         swerveIO.updateInputs(inputs);

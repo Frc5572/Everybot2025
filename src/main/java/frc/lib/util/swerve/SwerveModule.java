@@ -54,7 +54,7 @@ public class SwerveModule {
 
     /**
      * Setting the desired state of the swerve module
-     * 
+     *
      * @param desiredState the desired state of the swerve module
      * @param isOpenLoop whether is open or close looped
      */

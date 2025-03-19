@@ -8,6 +8,10 @@ import edu.wpi.first.units.measure.AngularVelocity;
  * Swerve Module IO
  */
 public interface SwerveModuleIO {
+
+    /**
+     * Swerve Module Inputs Class
+     */
     @AutoLog
     public static class SwerveModuleInputs {
         public Angle driveMotorSelectedPosition;
