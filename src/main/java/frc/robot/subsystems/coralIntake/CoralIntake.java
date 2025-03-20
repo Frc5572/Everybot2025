@@ -4,22 +4,17 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
 public class CoralIntake extends SubsystemBase {
     private CoralIntakeIO io;
     private CoralIntakeInputsAutoLogged inputs = new CoralIntakeInputsAutoLogged();
-    private CommandXboxController operator;
 
 
 
     public CoralIntake(CoralIntakeIO io) {
         this.io = io;
         io.updateInputs(inputs);
-
-
-
     }
 
     @Override
