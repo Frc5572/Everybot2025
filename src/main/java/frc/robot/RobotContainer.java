@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
 import frc.robot.subsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralIntake.CoralIntakeReal;
 
 
 /**
@@ -20,7 +21,7 @@ import frc.robot.subsystems.coralIntake.CoralIntake;
  */
 public class RobotContainer {
     /* Controllers */
-    private final CommandXboxController driver = new CommandXboxController(Constants.driverID);
+
     private final CommandXboxController operator = new CommandXboxController(Constants.operatorID);
 
     // Initialize AutoChooser Sendable
@@ -39,15 +40,18 @@ public class RobotContainer {
         switch (runtimeType) {
             case kReal:
                 // drivetrain = new Drivetrain(new DrivetrainReal());
+                coralintake = new CoralIntake(new CoralIntakeReal());
                 break;
+
             case kSimulation:
                 // drivetrain = new Drivetrain(new DrivetrainSim() {});
                 break;
             default:
-                // drivetrain = new Drivetrain(new DrivetrainIO() {});
+                // coralintake = new CoralIntake(CoralIntakeIO);
         }
         // Configure the button bindings
         configureButtonBindings();
+        configureOperatorBinds();
     }
 
     /**
@@ -79,5 +83,7 @@ public class RobotContainer {
     public void configureOperatorBinds() {
         operator.leftTrigger().whileTrue(coralintake.runCoralIntake());
         operator.rightTrigger().whileTrue(coralintake.runCoralOuttake());
+        operator.rightBumper().whileTrue(coralintake.wristUp());
+        operator.leftBumper().whileTrue(coralintake.wristDown());
     }
 }

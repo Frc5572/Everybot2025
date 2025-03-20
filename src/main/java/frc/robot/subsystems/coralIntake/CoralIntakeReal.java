@@ -1,6 +1,5 @@
 package frc.robot.subsystems.coralIntake;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -16,7 +15,6 @@ public class CoralIntakeReal implements CoralIntakeIO {
     public SparkMax coralWristMotor =
         new SparkMax(Constants.CoralSubsystem.kcoralWristMotorCanId, MotorType.kBrushless);
 
-    public AbsoluteEncoder coralWristAbsoluteEncoder = coralWristMotor.getAbsoluteEncoder();
 
     public SparkMaxConfig intakeconfig = new SparkMaxConfig();
     public SparkMaxConfig coralWristMotorconfig = new SparkMaxConfig();
@@ -36,7 +34,6 @@ public class CoralIntakeReal implements CoralIntakeIO {
 
     @Override
     public void updateInputs(CoralIntakeInputs inputs) {
-        inputs.coralWristAbsoluteEncoderRawValue = coralWristAbsoluteEncoder.getPosition();
 
     }
 
