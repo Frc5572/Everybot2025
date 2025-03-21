@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.lib.util.swerve.SwerveModule;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.questNav.QuestNavInputsAutoLogged;
 
 /**
  * Swerve
@@ -33,9 +34,12 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] swerveMods;
     private final Field2d field = new Field2d();
     private double fieldOffset;
-    private SwerveInputsAutoLogged inputs = new SwerveInputsAutoLogged();
+    private SwerveInputsAutoLogged swerveInputs = new SwerveInputsAutoLogged();
     private SwerveIO swerveIO;
     private boolean hasInitialized = false;
+
+    private questNavIO questNavIO;
+    private QuestNavInputsAutoLogged questNavInputs = new QuestNavInputsAutoLogged();
 
     /**
      * Swerve Constructor
@@ -44,6 +48,7 @@ public class Swerve extends SubsystemBase {
      */
     public Swerve(SwerveIO swerveIO) {
         this.swerveIO = swerveIO;
+        this.questNavIO = questNavIO;
         fieldOffset = getGyroYaw().getDegrees();
         swerveMods = new SwerveModule[] {
             swerveIO.createSwerveModule(0, Constants.Swerve.Mod0.driveMotorID,
@@ -61,7 +66,8 @@ public class Swerve extends SubsystemBase {
         swerveOdometry = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics,
             getGyroYaw(), getModulePositions(), new Pose2d());
 
-        swerveIO.updateInputs(inputs);
+        swerveIO.updateInputs(swerveInputs);
+        questNavIO.updateInputs(questNavInputs);
 
         RobotContainer.mainDriverTab.add("Field Pos", field).withWidget(BuiltInWidgets.kField)
             .withSize(0, 0).withPosition(0, 0);
@@ -218,7 +224,7 @@ public class Swerve extends SubsystemBase {
      * @return Current rotation/yaw of gyro as {@link Rotation2d}
      */
     public Rotation2d getGyroYaw() {
-        float yaw = inputs.yaw;
+        float yaw = questNavInputs.questYaw;
         return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(-yaw)
             : Rotation2d.fromDegrees(yaw);
     }
@@ -251,12 +257,12 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
-        swerveIO.updateInputs(inputs);
+        swerveIO.updateInputs(swerveInputs);
         for (var mod : swerveMods) {
             mod.periodic();
         }
         swerveOdometry.update(getGyroYaw(), getModulePositions());
-        Logger.processInputs("Swerve", inputs);
+        Logger.processInputs("Swerve", swerveInputs);
 
 
         Logger.recordOutput("/Swerve/hasInitialized", hasInitialized);
