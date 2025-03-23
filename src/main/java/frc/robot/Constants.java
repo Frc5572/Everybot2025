@@ -30,6 +30,13 @@ public final class Constants {
     public static final class Motors {
     }
 
+    public static final class AlgaeSubsystem {
+        public static final int kalgaeIntakeMotorCanId = 0;
+        public static final int kalgaeWristMotorCanId = 15;
+        public static final double INTAKE_VOLTAGE = 0.0;
+        public static final double OUTTAKE_VOLTAGE = 0.0;
+    }
+
     /**
      * Swerve Constants
      */
