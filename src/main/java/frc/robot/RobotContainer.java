@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
+import frc.robot.subsystems.Algae.Algae;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveReal;
@@ -32,6 +33,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private Swerve swerve;
+    private Algae algae;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -78,5 +80,13 @@ public class RobotContainer {
                 autocommand = new InstantCommand();
         }
         return autocommand;
+    }
+
+    public void configureOperatorBinds() {
+        operator.leftTrigger().whileTrue(algae.runAlgaeIntake());
+        operator.rightTrigger().whileTrue(algae.runAlgaeOuttake());
+        operator.rightBumper().whileTrue(algae.wristUp());
+        operator.leftBumper().whileTrue(algae.wristDown());
+
     }
 }
