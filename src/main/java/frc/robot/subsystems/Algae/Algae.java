@@ -36,19 +36,19 @@ public class Algae extends SubsystemBase {
 
 
     public Command runAlgaeIntake() {
-        return Commands.runEnd(() -> setAlgaeVoltage(6), () -> setAlgaeVoltage(0));
+        return Commands.runEnd(() -> setAlgaeVoltage(12), () -> setAlgaeVoltage(0));
     }
 
     public Command runAlgaeOuttake() {
-        return Commands.runEnd(() -> setAlgaeVoltage(-6), () -> setAlgaeVoltage(0));
+        return Commands.runEnd(() -> setAlgaeVoltage(-12), () -> setAlgaeVoltage(0));
     }
 
-    public Command wristDown() {
-        return Commands.runEnd(() -> setAlgaeWristVoltage(-5), () -> setAlgaeWristVoltage(0));
+    public Command algaeWristDown() {
+        return Commands.runEnd(() -> setAlgaeWristVoltage(-12), () -> setAlgaeWristVoltage(0));
     }
 
-    public Command wristUp() {
-        return Commands.runEnd(() -> setAlgaeWristVoltage(5), () -> setAlgaeWristVoltage(0));
+    public Command algaeWristUp() {
+        return Commands.runEnd(() -> setAlgaeWristVoltage(12), () -> setAlgaeWristVoltage(0));
 
     }
 }

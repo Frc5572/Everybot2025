@@ -23,7 +23,6 @@ public class AlgaeReal implements AlgaeIO {
 
     public AlgaeReal() {
         algaeWristMotorconfig.idleMode(IdleMode.kBrake);
-        algaeWristMotorconfig.encoder.positionConversionFactor(1);
         algaeWristMotor.configure(algaeWristMotorconfig, ResetMode.kNoResetSafeParameters,
             PersistMode.kPersistParameters);
 
