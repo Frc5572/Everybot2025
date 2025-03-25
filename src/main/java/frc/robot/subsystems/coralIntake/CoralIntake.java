@@ -36,19 +36,19 @@ public class CoralIntake extends SubsystemBase {
 
 
     public Command runCoralIntake() {
-        return Commands.runEnd(() -> setCoralVoltage(6), () -> setCoralVoltage(0));
+        return Commands.runEnd(() -> setCoralVoltage(12), () -> setCoralVoltage(0));
     }
 
     public Command runCoralOuttake() {
-        return Commands.runEnd(() -> setCoralVoltage(-6), () -> setCoralVoltage(0));
+        return Commands.runEnd(() -> setCoralVoltage(-12), () -> setCoralVoltage(0));
     }
 
     public Command wristDown() {
-        return Commands.runEnd(() -> setWristVoltage(-5), () -> setWristVoltage(0));
+        return Commands.runEnd(() -> setWristVoltage(-12), () -> setWristVoltage(0));
     }
 
     public Command wristUp() {
-        return Commands.runEnd(() -> setWristVoltage(5), () -> setWristVoltage(0));
+        return Commands.runEnd(() -> setWristVoltage(12), () -> setWristVoltage(0));
 
     }
 

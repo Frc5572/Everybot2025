@@ -23,7 +23,6 @@ public class CoralIntakeReal implements CoralIntakeIO {
 
     public CoralIntakeReal() {
         coralWristMotorconfig.idleMode(IdleMode.kBrake);
-        coralWristMotorconfig.encoder.positionConversionFactor(1);
         coralWristMotor.configure(coralWristMotorconfig, ResetMode.kNoResetSafeParameters,
             PersistMode.kPersistParameters);
 
