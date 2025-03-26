@@ -1,4 +1,4 @@
-package frc.robot.subsystems.coralIntake;
+package frc.robot.subsystems.coralintake;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -8,6 +8,9 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.robot.Constants;
 
+/**
+ * Real Class Coral INtake
+ */
 public class CoralIntakeReal implements CoralIntakeIO {
 
     public SparkMax intakeMotor =
@@ -20,7 +23,9 @@ public class CoralIntakeReal implements CoralIntakeIO {
     public SparkMaxConfig coralWristMotorconfig = new SparkMaxConfig();
 
 
-
+    /**
+     * Coral Intake Real
+     */
     public CoralIntakeReal() {
         coralWristMotorconfig.idleMode(IdleMode.kBrake);
         coralWristMotor.configure(coralWristMotorconfig, ResetMode.kNoResetSafeParameters,

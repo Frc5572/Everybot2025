@@ -1,7 +1,10 @@
-package frc.robot.subsystems.coralIntake;
+package frc.robot.subsystems.coralintake;
 
 import org.littletonrobotics.junction.AutoLog;
 
+/**
+ * Coral Intake IO
+ */
 public interface CoralIntakeIO {
     @AutoLog
     public static class CoralIntakeInputs {
