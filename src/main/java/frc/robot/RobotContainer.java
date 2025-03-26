@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
-import frc.robot.subsystems.coralIntake.CoralIntake;
-import frc.robot.subsystems.coralIntake.CoralIntakeReal;
+import frc.robot.subsystems.CoralIntake.CoralIntake;
+import frc.robot.subsystems.CoralIntake.CoralIntakeReal;
 
 
 /**
@@ -80,7 +80,7 @@ public class RobotContainer {
         return autocommand;
     }
 
-    public void configureOperatorBinds() {
+    private void configureOperatorBinds() {
         operator.leftTrigger().whileTrue(coralintake.runCoralIntake());
         operator.rightTrigger().whileTrue(coralintake.runCoralOuttake());
         operator.rightBumper().whileTrue(coralintake.wristUp());
