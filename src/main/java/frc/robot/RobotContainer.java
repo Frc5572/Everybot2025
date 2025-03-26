@@ -80,7 +80,7 @@ public class RobotContainer {
         return autocommand;
     }
 
-    public void configureOperatorBinds() {
+    private void configureOperatorBinds() {
         operator.leftTrigger().whileTrue(coralintake.runCoralIntake());
         operator.rightTrigger().whileTrue(coralintake.runCoralOuttake());
         operator.rightBumper().whileTrue(coralintake.wristUp());
