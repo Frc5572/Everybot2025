@@ -30,6 +30,9 @@ public final class Constants {
     public static final class Motors {
     }
 
+    /**
+     * Algae Constants
+     */
     public static final class AlgaeSubsystem {
         public static final int kalgaeIntakeMotorCanId = 29;
         public static final int kalgaeWristMotorCanId = 57;
