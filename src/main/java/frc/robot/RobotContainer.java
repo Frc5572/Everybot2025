@@ -85,11 +85,14 @@ public class RobotContainer {
         return autocommand;
     }
 
+    /**
+     * configure binds
+     */
     public void configureOperatorBinds() {
-        operator.leftTrigger().whileTrue(algae.runAlgaeIntake());
-        operator.rightTrigger().whileTrue(algae.runAlgaeOuttake());
-        operator.rightBumper().whileTrue(algae.algaeWristDown());
-        operator.leftBumper().whileTrue(algae.algaeWristUp());
+        operator.x().whileTrue(algae.runAlgaeIntake());
+        operator.y().whileTrue(algae.runAlgaeOuttake());
+        operator.a().whileTrue(algae.algaeWristDown());
+        operator.b().whileTrue(algae.algaeWristUp());
 
     }
 }
