@@ -15,7 +15,7 @@ public class CoralIntake extends SubsystemBase {
 
     /**
      * Coral Scoring subsystem
-     * 
+     *
      * @param io IO for the Swerve
      */
     public CoralIntake(CoralIntakeIO io) {
@@ -31,7 +31,7 @@ public class CoralIntake extends SubsystemBase {
 
     /**
      * Set motor power for the coral intake/outake
-     * 
+     *
      * @param voltage voltage for the motor for intake/outake
      */
     public void setCoralVoltage(double voltage) {
@@ -42,7 +42,7 @@ public class CoralIntake extends SubsystemBase {
 
     /**
      * set motor power for the wrist
-     * 
+     *
      * @param voltage voltage for the motor for the wrist
      */
     public void setWristVoltage(double voltage) {
@@ -53,7 +53,7 @@ public class CoralIntake extends SubsystemBase {
 
     /**
      * Command for the intake set intake voltage
-     * 
+     *
      * @return Command
      */
     public Command runCoralIntake() {
@@ -62,7 +62,7 @@ public class CoralIntake extends SubsystemBase {
 
     /**
      * Command for the outake set outake voltage
-     * 
+     *
      * @return Command
      */
     public Command runCoralOuttake() {
@@ -71,7 +71,7 @@ public class CoralIntake extends SubsystemBase {
 
     /**
      * Command for the wrist going down set the wrist volage
-     * 
+     *
      * @return Command
      */
     public Command wristDown() {
@@ -80,7 +80,7 @@ public class CoralIntake extends SubsystemBase {
 
     /**
      * Command for the wrist going up set the wrist voltage
-     * 
+     *
      * @return Command
      */
     public Command wristUp() {

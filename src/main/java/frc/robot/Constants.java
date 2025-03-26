@@ -29,6 +29,9 @@ public final class Constants {
     public static final class Pneumatics {
     }
 
+    /**
+     * Coral Subsystem constants
+     */
     public static final class CoralSubsystem {
         // public static final int kWristMotorCanId = 0;
         public static final int kIntakeMotorCanId = 22;
