@@ -46,8 +46,10 @@ public class RobotContainer {
             case kReal:
                 swerve = new Swerve(new SwerveReal());
                 algae = new Algae(new AlgaeReal());
+                break;
             case kSimulation:
                 // drivetrain = new Drivetrain(new DrivetrainSim() {});
+
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
