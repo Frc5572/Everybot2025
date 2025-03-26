@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+/** Elevator Real layer */
 public class ElevatorReal implements ElevatorIO {
     private final SparkMax elevatorMotor = new SparkMax(0, MotorType.kBrushless);
     private final SparkBaseConfig elevatorConf = new SparkMaxConfig();
