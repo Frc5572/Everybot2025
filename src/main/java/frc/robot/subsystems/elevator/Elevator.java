@@ -14,7 +14,7 @@ public class Elevator extends SubsystemBase {
     ElevatorIO io;
     ElevatorInputsAutoLogged inputs = new ElevatorInputsAutoLogged();
 
-    Elevator(ElevatorIO io) {
+    public Elevator(ElevatorIO io) {
         this.io = io;
         io.updateInputs(inputs);
     }
@@ -37,6 +37,10 @@ public class Elevator extends SubsystemBase {
             io.setPosition(height.get().in(Meters));
         }).andThen(Commands
             .waitUntil(() -> Math.abs(inputs.position.in(Inches) - height.get().in(Inches)) < 1));
+    }
+
+    public Command setVoltage(double v) {
+        return runEnd(() -> io.setVoltage(v), () -> io.setVoltage(0));
     }
 
 

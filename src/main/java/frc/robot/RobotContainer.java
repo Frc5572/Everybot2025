@@ -1,5 +1,6 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Meters;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -11,6 +12,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorReal;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveReal;
@@ -32,6 +36,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private Swerve swerve;
+    private Elevator elevator;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -42,16 +47,19 @@ public class RobotContainer {
         switch (runtimeType) {
             case kReal:
                 swerve = new Swerve(new SwerveReal());
+                elevator = new Elevator(new ElevatorReal());
                 break;
             case kSimulation:
                 // drivetrain = new Drivetrain(new DrivetrainSim() {});
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
+                elevator = new Elevator(new ElevatorIO() {});
         }
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
         configureButtonBindings();
+        operatorBinds();
     }
 
     /**
@@ -61,6 +69,14 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {}
+
+    private void operatorBinds() {
+        SmartDashboard.putNumber("voltage", 0);
+        operator.a().whileTrue(elevator.setVoltage(SmartDashboard.getNumber("voltage", 0)));
+        SmartDashboard.putNumber("height", 0);
+        operator.x()
+            .whileTrue(elevator.moveTo(() -> Meters.of(SmartDashboard.getNumber("height", 0))));
+    }
 
     /**
      * Gets the user's selected autonomous command.

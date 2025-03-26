@@ -18,7 +18,7 @@ public class ElevatorReal implements ElevatorIO {
     private final SparkClosedLoopController controller = elevatorMotor.getClosedLoopController();
     private final AbsoluteEncoder encoder = elevatorMotor.getAbsoluteEncoder();
 
-    ElevatorReal() {
+    public ElevatorReal() {
         config();
     }
 
