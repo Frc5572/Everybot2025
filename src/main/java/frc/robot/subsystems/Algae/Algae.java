@@ -76,7 +76,7 @@ public class Algae extends SubsystemBase {
      * @return Command
      */
     public Command algaeWristDown() {
-        return Commands.runEnd(() -> setAlgaeWristVoltage(-12), () -> setAlgaeWristVoltage(0));
+        return Commands.runEnd(() -> setAlgaeWristVoltage(-1), () -> setAlgaeWristVoltage(0));
     }
 
     /**
@@ -85,7 +85,7 @@ public class Algae extends SubsystemBase {
      * @return Command
      */
     public Command algaeWristUp() {
-        return Commands.runEnd(() -> setAlgaeWristVoltage(12), () -> setAlgaeWristVoltage(0));
+        return Commands.runEnd(() -> setAlgaeWristVoltage(1), () -> setAlgaeWristVoltage(0));
 
     }
 }
