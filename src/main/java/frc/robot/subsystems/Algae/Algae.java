@@ -4,6 +4,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.algae.AlgaeInputsAutoLogged;
 
 /**
  * Algae Subsystem
@@ -58,7 +59,7 @@ public class Algae extends SubsystemBase {
      * @return Command
      */
     public Command runAlgaeIntake() {
-        return Commands.runEnd(() -> setAlgaeVoltage(12), () -> setAlgaeVoltage(0));
+        return Commands.runEnd(() -> setAlgaeVoltage(5), () -> setAlgaeVoltage(0));
     }
 
     /**
@@ -67,7 +68,7 @@ public class Algae extends SubsystemBase {
      * @return Command
      */
     public Command runAlgaeOuttake() {
-        return Commands.runEnd(() -> setAlgaeVoltage(-12), () -> setAlgaeVoltage(0));
+        return Commands.runEnd(() -> setAlgaeVoltage(-5), () -> setAlgaeVoltage(0));
     }
 
     /**
@@ -76,7 +77,7 @@ public class Algae extends SubsystemBase {
      * @return Command
      */
     public Command algaeWristDown() {
-        return Commands.runEnd(() -> setAlgaeWristVoltage(-1), () -> setAlgaeWristVoltage(0));
+        return Commands.runEnd(() -> setAlgaeWristVoltage(-2), () -> setAlgaeWristVoltage(0));
     }
 
     /**
@@ -85,7 +86,7 @@ public class Algae extends SubsystemBase {
      * @return Command
      */
     public Command algaeWristUp() {
-        return Commands.runEnd(() -> setAlgaeWristVoltage(1), () -> setAlgaeWristVoltage(0));
+        return Commands.runEnd(() -> setAlgaeWristVoltage(2), () -> setAlgaeWristVoltage(0));
 
     }
 }
