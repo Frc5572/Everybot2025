@@ -2,6 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -9,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
+import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.swerve.SwerveIO;
+import frc.robot.subsystems.swerve.SwerveReal;
 import frc.robot.subsystems.coralintake.CoralIntake;
 import frc.robot.subsystems.coralintake.CoralIntakeReal;
 
@@ -20,6 +25,7 @@ import frc.robot.subsystems.coralintake.CoralIntakeReal;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+    public static ShuffleboardTab mainDriverTab = Shuffleboard.getTab("Main Driver");
     /* Controllers */
 
     private final CommandXboxController operator = new CommandXboxController(Constants.operatorID);
@@ -28,7 +34,7 @@ public class RobotContainer {
     private final SendableChooser<String> autoChooser = new SendableChooser<>();
 
     /* Subsystems */
-    // private Drivetrain drivetrain;
+    // private Swerve swerve;
     private CoralIntake coralintake;
 
     /**
@@ -39,16 +45,17 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Wait 1 Second", "wait");
         switch (runtimeType) {
             case kReal:
-                // drivetrain = new Drivetrain(new DrivetrainReal());
-                coralintake = new CoralIntake(new CoralIntakeReal());
+                drivetrain = new Drivetrain(new DrivetrainReal());
                 break;
 
             case kSimulation:
                 // drivetrain = new Drivetrain(new DrivetrainSim() {});
                 break;
             default:
-                // coralintake = new CoralIntake(CoralIntakeIO);
+                swerve = new Swerve(new SwerveIO() {});
+                 coralintake = new CoralIntake(CoralIntakeIO);
         }
+        swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
         configureButtonBindings();
         configureOperatorBinds();
