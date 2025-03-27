@@ -34,18 +34,21 @@ public class ElevatorReal implements ElevatorIO {
             PersistMode.kPersistParameters);
     }
 
-    private void setPosition(double position) {
-        controller.setReference(position, SparkBase.ControlType.kMAXMotionPositionControl);
-    }
-
-
-    private void setVoltage(double v) {
-        elevatorMotor.setVoltage(v);
-    }
-
     @Override
     public void updateInputs(ElevatorInputs inputs) {
         inputs.position = Meters.of(encoder.getPosition());
     }
+
+    @Override
+    public void setPosition(double position) {
+        controller.setReference(position, SparkBase.ControlType.kMAXMotionPositionControl);
+    }
+
+
+    @Override
+    public void setVoltage(double v) {
+        elevatorMotor.setVoltage(v);
+    }
+
 
 }

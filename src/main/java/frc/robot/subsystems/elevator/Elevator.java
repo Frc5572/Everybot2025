@@ -8,6 +8,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
 
@@ -23,6 +24,25 @@ public class Elevator extends SubsystemBase {
     public void periodic() {
         Logger.processInputs("Elevator", inputs);
     }
+
+
+    public Command p0() {
+        return moveTo(() -> Constants.Elevator.P0);
+    }
+
+    public Command p1() {
+        return moveTo(() -> Constants.Elevator.P1);
+    }
+
+    public Command p2() {
+        return moveTo(() -> Constants.Elevator.P2);
+    }
+
+    public Command p3() {
+        return moveTo(() -> Constants.Elevator.P3);
+    }
+
+
 
     /**
      * sets height of elevator
