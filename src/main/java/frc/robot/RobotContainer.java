@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
-import frc.robot.subsystems.CoralIntake.CoralIntake;
-import frc.robot.subsystems.CoralIntake.CoralIntakeReal;
+import frc.robot.subsystems.coralintake.CoralIntake;
+import frc.robot.subsystems.coralintake.CoralIntakeReal;
 
 
 /**
