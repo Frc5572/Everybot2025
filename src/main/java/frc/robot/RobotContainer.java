@@ -1,6 +1,6 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Inches;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -68,15 +68,16 @@ public class RobotContainer {
      * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
-    private void configureButtonBindings() {}
+    private void configureButtonBindings() {
+        SmartDashboard.putNumber("height", 20);
+        operator.povUp().whileTrue(elevator.setVoltage(5));
+        operator.povDown().whileTrue(elevator.setVoltage(-5));
 
-    private void operatorBinds() {
-        SmartDashboard.putNumber("voltage", 0);
-        operator.a().whileTrue(elevator.setVoltage(SmartDashboard.getNumber("voltage", 0)));
-        SmartDashboard.putNumber("height", 0);
         operator.x()
-            .whileTrue(elevator.moveTo(() -> Meters.of(SmartDashboard.getNumber("height", 0))));
+            .whileTrue(elevator.moveTo(() -> Inches.of(SmartDashboard.getNumber("height", 20))));
     }
+
+    private void operatorBinds() {}
 
     /**
      * Gets the user's selected autonomous command.
