@@ -1,10 +1,9 @@
-package frc.robot.subsystems.coralintake;
+package frc.robot.subsystems.CoralIntake;
 
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.coralintake.CoralIntakeInputsAutoLogged;
 
 /**
  * Coral Intake Subsystem
