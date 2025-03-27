@@ -4,6 +4,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.coralintake.CoralIntakeInputsAutoLogged;
 
 /**
  * Coral Intake Subsystem
@@ -57,7 +58,7 @@ public class CoralIntake extends SubsystemBase {
      * @return Command
      */
     public Command runCoralIntake() {
-        return Commands.runEnd(() -> setCoralVoltage(12), () -> setCoralVoltage(0));
+        return Commands.runEnd(() -> setCoralVoltage(3), () -> setCoralVoltage(0));
     }
 
     /**
@@ -66,7 +67,7 @@ public class CoralIntake extends SubsystemBase {
      * @return Command
      */
     public Command runCoralOuttake() {
-        return Commands.runEnd(() -> setCoralVoltage(-12), () -> setCoralVoltage(0));
+        return Commands.runEnd(() -> setCoralVoltage(-3), () -> setCoralVoltage(0));
     }
 
     /**
@@ -75,7 +76,7 @@ public class CoralIntake extends SubsystemBase {
      * @return Command
      */
     public Command wristDown() {
-        return Commands.runEnd(() -> setWristVoltage(-12), () -> setWristVoltage(0));
+        return Commands.runEnd(() -> setWristVoltage(-10), () -> setWristVoltage(0));
     }
 
     /**
@@ -84,7 +85,7 @@ public class CoralIntake extends SubsystemBase {
      * @return Command
      */
     public Command wristUp() {
-        return Commands.runEnd(() -> setWristVoltage(12), () -> setWristVoltage(0));
+        return Commands.runEnd(() -> setWristVoltage(10), () -> setWristVoltage(0));
 
     }
 
