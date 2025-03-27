@@ -34,7 +34,7 @@ public class RobotContainer {
     private final SendableChooser<String> autoChooser = new SendableChooser<>();
 
     /* Subsystems */
-    // private Swerve swerve;
+    private Swerve swerve;
     private CoralIntake coralintake;
 
     /**
@@ -45,7 +45,9 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Wait 1 Second", "wait");
         switch (runtimeType) {
             case kReal:
-                drivetrain = new Drivetrain(new DrivetrainReal());
+                //drivetrain = new Drivetrain(new DrivetrainReal());
+                swerve = new Swerve(new SwerveReal);
+                coralintake = new CoralIntake(CoralIntakeReal);
                 break;
 
             case kSimulation:
@@ -53,7 +55,7 @@ public class RobotContainer {
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
-                 coralintake = new CoralIntake(CoralIntakeIO);
+                coralintake = new CoralIntake(CoralIntakeIO);
         }
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
