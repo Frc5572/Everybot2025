@@ -11,11 +11,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
+import frc.robot.subsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralIntake.CoralIntakeIO;
+import frc.robot.subsystems.coralIntake.CoralIntakeReal;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveReal;
-import frc.robot.subsystems.coralintake.CoralIntake;
-import frc.robot.subsystems.coralintake.CoralIntakeReal;
 
 
 /**
@@ -27,7 +28,7 @@ import frc.robot.subsystems.coralintake.CoralIntakeReal;
 public class RobotContainer {
     public static ShuffleboardTab mainDriverTab = Shuffleboard.getTab("Main Driver");
     /* Controllers */
-
+    private final CommandXboxController driver = new CommandXboxController(Constants.driverID);
     private final CommandXboxController operator = new CommandXboxController(Constants.operatorID);
 
     // Initialize AutoChooser Sendable
@@ -45,9 +46,9 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Wait 1 Second", "wait");
         switch (runtimeType) {
             case kReal:
-                //drivetrain = new Drivetrain(new DrivetrainReal());
-                swerve = new Swerve(new SwerveReal);
-                coralintake = new CoralIntake(CoralIntakeReal);
+                // drivetrain = new Drivetrain(new DrivetrainReal());
+                swerve = new Swerve(new SwerveReal());
+                coralintake = new CoralIntake(new CoralIntakeReal());
                 break;
 
             case kSimulation:
@@ -55,7 +56,7 @@ public class RobotContainer {
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
-                coralintake = new CoralIntake(CoralIntakeIO);
+                coralintake = new CoralIntake(new CoralIntakeIO() {});
         }
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
