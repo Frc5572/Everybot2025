@@ -11,8 +11,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
-import frc.robot.subsystems.algae.Algae;
-import frc.robot.subsystems.algae.AlgaeReal;
+import frc.robot.subsystems.Algae.Algae;
+import frc.robot.subsystems.Algae.AlgaeIO;
+import frc.robot.subsystems.Algae.AlgaeReal;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveReal;
@@ -53,7 +54,7 @@ public class RobotContainer {
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
-                algae = new Algae(new AlgaeReal());
+                algae = new Algae(new AlgaeIO() {});
         }
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
