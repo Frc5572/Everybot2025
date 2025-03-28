@@ -11,9 +11,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
+import frc.robot.subsystems.coralintake.CoralIntake;
+import frc.robot.subsystems.coralintake.CoralIntakeIO;
+import frc.robot.subsystems.coralintake.CoralIntakeReal;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveReal;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,6 +36,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private Swerve swerve;
+    private CoralIntake coralintake;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -41,17 +46,22 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Wait 1 Second", "wait");
         switch (runtimeType) {
             case kReal:
+                // drivetrain = new Drivetrain(new DrivetrainReal());
                 swerve = new Swerve(new SwerveReal());
+                coralintake = new CoralIntake(new CoralIntakeReal());
                 break;
+
             case kSimulation:
                 // drivetrain = new Drivetrain(new DrivetrainSim() {});
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
+                coralintake = new CoralIntake(new CoralIntakeIO() {});
         }
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
         configureButtonBindings();
+        configureOperatorBinds();
     }
 
     /**
@@ -78,5 +88,12 @@ public class RobotContainer {
                 autocommand = new InstantCommand();
         }
         return autocommand;
+    }
+
+    private void configureOperatorBinds() {
+        operator.leftTrigger().whileTrue(coralintake.runCoralIntake());
+        operator.rightTrigger().whileTrue(coralintake.runCoralOuttake());
+        operator.rightBumper().whileTrue(coralintake.wristUp());
+        operator.leftBumper().whileTrue(coralintake.wristDown());
     }
 }
