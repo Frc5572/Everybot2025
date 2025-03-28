@@ -53,6 +53,7 @@ public class RobotContainer {
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
         configureButtonBindings();
+        setupDriver();
     }
 
     /**
