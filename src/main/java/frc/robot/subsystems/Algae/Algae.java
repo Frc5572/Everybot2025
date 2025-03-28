@@ -1,4 +1,4 @@
-package frc.robot.subsystems.algae;
+package frc.robot.subsystems.Algae;
 
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;

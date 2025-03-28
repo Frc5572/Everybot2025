@@ -1,4 +1,4 @@
-package frc.robot.subsystems.algae;
+package frc.robot.subsystems.Algae;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
