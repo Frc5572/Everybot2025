@@ -104,6 +104,7 @@ public class Swerve extends SubsystemBase {
                 new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
             double rotation = -raxis * Constants.Swerve.maxAngularVelocity;
             this.drive(translation, rotation, true);
+
         });
     }
 
@@ -237,7 +238,7 @@ public class Swerve extends SubsystemBase {
      */
     public void resetFieldRelativeOffset() {
         // gyro.zeroYaw();
-        fieldOffset = getGyroYaw().getDegrees() + 180;
+        fieldOffset = getGyroYaw().getDegrees();
     }
 
     /**
@@ -308,5 +309,7 @@ public class Swerve extends SubsystemBase {
         }
         return false;
     }
+
+
 
 }
