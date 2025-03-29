@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
+import frc.robot.subsystems.algae.Algae;
+import frc.robot.subsystems.algae.AlgaeIO;
+import frc.robot.subsystems.algae.AlgaeReal;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveReal;
@@ -32,6 +35,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private Swerve swerve;
+    private Algae algae;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -42,16 +46,20 @@ public class RobotContainer {
         switch (runtimeType) {
             case kReal:
                 swerve = new Swerve(new SwerveReal());
+                algae = new Algae(new AlgaeReal());
                 break;
             case kSimulation:
                 // drivetrain = new Drivetrain(new DrivetrainSim() {});
+
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
+                algae = new Algae(new AlgaeIO() {});
         }
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
         configureButtonBindings();
+        configureOperatorBinds();
     }
 
     /**
@@ -78,5 +86,16 @@ public class RobotContainer {
                 autocommand = new InstantCommand();
         }
         return autocommand;
+    }
+
+    /**
+     * configure binds
+     */
+    public void configureOperatorBinds() {
+        operator.x().whileTrue(algae.runAlgaeIntake());
+        operator.y().whileTrue(algae.runAlgaeOuttake());
+        operator.a().whileTrue(algae.algaeWristDown());
+        operator.b().whileTrue(algae.algaeWristUp());
+
     }
 }
