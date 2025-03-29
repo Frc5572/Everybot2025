@@ -2,6 +2,7 @@ package frc.robot.subsystems.elevator;
 
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.units.measure.Distance;
@@ -62,9 +63,7 @@ public class Elevator extends SubsystemBase {
             .waitUntil(() -> Math.abs(inputs.position.in(Inches) - height.get().in(Inches)) < 1));
     }
 
-    public Command setVoltage(double v) {
-        return runEnd(() -> io.setVoltage(v), () -> io.setVoltage(0));
+    public Command setVoltage(DoubleSupplier v) {
+        return runEnd(() -> io.setVoltage(v.getAsDouble()), (() -> io.setVoltage(0)));
     }
-
-
 }

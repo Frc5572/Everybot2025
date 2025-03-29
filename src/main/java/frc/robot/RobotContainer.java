@@ -69,12 +69,15 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        SmartDashboard.putNumber("height", 20);
-        operator.povUp().whileTrue(elevator.setVoltage(5));
-        operator.povDown().whileTrue(elevator.setVoltage(-5));
+        SmartDashboard.putNumber("height", 40);
+        SmartDashboard.putNumber("voltage", 0);
 
+        operator.povUp().whileTrue(elevator.setVoltage(() -> 5));
+        operator.povDown().whileTrue(elevator.setVoltage(() -> -5));
+
+        operator.a().whileTrue(elevator.setVoltage(() -> SmartDashboard.getNumber("voltage", 0)));
         operator.x()
-            .whileTrue(elevator.moveTo(() -> Inches.of(SmartDashboard.getNumber("height", 20))));
+            .whileTrue(elevator.moveTo(() -> Inches.of(SmartDashboard.getNumber("height", 40))));
     }
 
     private void operatorBinds() {}

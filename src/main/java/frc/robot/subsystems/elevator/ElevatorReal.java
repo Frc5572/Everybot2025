@@ -1,5 +1,6 @@
 package frc.robot.subsystems.elevator;
 
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Rotations;
 import com.revrobotics.RelativeEncoder;
@@ -28,8 +29,10 @@ public class ElevatorReal implements ElevatorIO {
 
     private void config() {
         elevatorConf.inverted(false);
-        // elevatorConf.encoder.positionConversionFactor(1.0 / 25.0);
-        elevatorConf.closedLoop.pidf(5, 0, 0, 0, ClosedLoopSlot.kSlot0);
+        encoder.setPosition(0.0);
+        elevatorConf.encoder
+            .positionConversionFactor(Inches.of(60).in(Meters) / Rotations.of(190).in(Rotations));
+        elevatorConf.closedLoop.pidf(30, 0, 0, 0, ClosedLoopSlot.kSlot0);
         elevatorConf.closedLoop.maxMotion.maxAcceleration(0).maxVelocity(0)
             .allowedClosedLoopError(0);
         elevatorMotor.configure(elevatorConf, ResetMode.kResetSafeParameters,
@@ -50,29 +53,5 @@ public class ElevatorReal implements ElevatorIO {
         inputs.position = Meters.of(encoder.getPosition());
         inputs.rotation = Rotations.of(encoder.getPosition());
     }
-
-    @Override
-    public void setPosition(double position) {
-        controller.setReference(position, SparkBase.ControlType.kMAXMotionPositionControl);
-    }
-
-
-    @Override
-    public void setVoltage(double v) {
-        elevatorMotor.setVoltage(v);
-    }
-
-
-    @Override
-    public void setPosition(double position) {
-        controller.setReference(position, SparkBase.ControlType.kMAXMotionPositionControl);
-    }
-
-
-    @Override
-    public void setVoltage(double v) {
-        elevatorMotor.setVoltage(v);
-    }
-
 
 }
