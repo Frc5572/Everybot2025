@@ -24,8 +24,6 @@ public class ElevatorReal implements ElevatorIO {
         config();
     }
 
-
-
     private void config() {
         elevatorConf.inverted(false);
         // elevatorConf.encoder.positionConversionFactor(1.0 / 25.0);
@@ -51,28 +49,18 @@ public class ElevatorReal implements ElevatorIO {
         inputs.rotation = Rotations.of(encoder.getPosition());
     }
 
-    @Override
-    public void setPosition(double position) {
-        controller.setReference(position, SparkBase.ControlType.kMAXMotionPositionControl);
-    }
+    //
+    // @Override
+    // public void setPosition(double position) {
+    // controller.setReference(position, SparkBase.ControlType.kMAXMotionPositionControl);
+    // }
 
 
-    @Override
-    public void setVoltage(double v) {
-        elevatorMotor.setVoltage(v);
-    }
+    // @Override
+    // public void setVoltage(double v) {
+    // elevatorMotor.setVoltage(v);
+    // }
 
-
-    @Override
-    public void setPosition(double position) {
-        controller.setReference(position, SparkBase.ControlType.kMAXMotionPositionControl);
-    }
-
-
-    @Override
-    public void setVoltage(double v) {
-        elevatorMotor.setVoltage(v);
-    }
 
 
 }
