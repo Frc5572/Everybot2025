@@ -3,6 +3,7 @@ package frc.robot.subsystems.elevator;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.Volts;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -30,7 +31,7 @@ public class ElevatorReal implements ElevatorIO {
         encoder.setPosition(0.0);
         elevatorConf.encoder
             .positionConversionFactor(Inches.of(60).in(Meters) / Rotations.of(190).in(Rotations));
-        elevatorConf.closedLoop.pidf(30, 0, 0, 0, ClosedLoopSlot.kSlot0);
+        elevatorConf.closedLoop.pidf(100, 0, 0, 0.22, ClosedLoopSlot.kSlot0);
         elevatorConf.closedLoop.maxMotion.maxAcceleration(0).maxVelocity(0)
             .allowedClosedLoopError(0);
         elevatorMotor.configure(elevatorConf, ResetMode.kResetSafeParameters,
@@ -38,7 +39,7 @@ public class ElevatorReal implements ElevatorIO {
     }
 
     public void setPosition(double position) {
-        controller.setReference(position, ControlType.kPosition);
+        controller.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
     }
 
 
@@ -48,6 +49,7 @@ public class ElevatorReal implements ElevatorIO {
 
     @Override
     public void updateInputs(ElevatorInputs inputs) {
+        inputs.voltage = Volts.of(elevatorMotor.getBusVoltage());
         inputs.position = Meters.of(encoder.getPosition());
         inputs.rotation = Rotations.of(encoder.getPosition());
     }
