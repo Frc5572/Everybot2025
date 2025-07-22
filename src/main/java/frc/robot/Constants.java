@@ -31,6 +31,9 @@ public final class Constants {
     public static final class Motors {
     }
 
+    /**
+     * Elevator Constants
+     */
     public static final class Elevator {
         public static final Distance HOME = null;
         public static final Distance P0 = null; // Coral 1
