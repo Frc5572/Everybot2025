@@ -1,6 +1,5 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Inches;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -12,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
+import frc.robot.subsystems.algae.Algae;
+import frc.robot.subsystems.algae.AlgaeIO;
+import frc.robot.subsystems.algae.AlgaeReal;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorReal;
@@ -37,6 +39,7 @@ public class RobotContainer {
     /* Subsystems */
     private Swerve swerve;
     private Elevator elevator;
+    private Algae algae;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -48,18 +51,21 @@ public class RobotContainer {
             case kReal:
                 swerve = new Swerve(new SwerveReal());
                 elevator = new Elevator(new ElevatorReal());
+                algae = new Algae(new AlgaeReal());
                 break;
             case kSimulation:
                 // drivetrain = new Drivetrain(new DrivetrainSim() {});
+
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
                 elevator = new Elevator(new ElevatorIO() {});
+                algae = new Algae(new AlgaeIO() {});
         }
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
         configureButtonBindings();
-        operatorBinds();
+        configureOperatorBinds();
     }
 
     /**
@@ -71,16 +77,20 @@ public class RobotContainer {
     private void configureButtonBindings() {
         SmartDashboard.putNumber("height", 40);
         SmartDashboard.putNumber("voltage", 0);
+    }
+
+    /**
+     * operator configure binds
+     */
+    public void configureOperatorBinds() {
+        operator.x().whileTrue(algae.runAlgaeIntake());
+        operator.y().whileTrue(algae.runAlgaeOuttake());
+        operator.a().whileTrue(algae.algaeWristDown());
+        operator.b().whileTrue(algae.algaeWristUp());
 
         operator.povUp().whileTrue(elevator.setVoltage(() -> 5));
         operator.povDown().whileTrue(elevator.setVoltage(() -> -5));
-
-        operator.a().whileTrue(elevator.setVoltage(() -> SmartDashboard.getNumber("voltage", 0)));
-        operator.x()
-            .whileTrue(elevator.moveTo(() -> Inches.of(SmartDashboard.getNumber("height", 40))));
     }
-
-    private void operatorBinds() {}
 
     /**
      * Gets the user's selected autonomous command.
