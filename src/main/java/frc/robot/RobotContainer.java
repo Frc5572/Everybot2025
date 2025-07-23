@@ -14,6 +14,9 @@ import frc.robot.Robot.RobotRunType;
 import frc.robot.subsystems.algae.Algae;
 import frc.robot.subsystems.algae.AlgaeIO;
 import frc.robot.subsystems.algae.AlgaeReal;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorReal;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveReal;
@@ -35,6 +38,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private Swerve swerve;
+    private Elevator elevator;
     private Algae algae;
 
     /**
@@ -46,6 +50,7 @@ public class RobotContainer {
         switch (runtimeType) {
             case kReal:
                 swerve = new Swerve(new SwerveReal());
+                elevator = new Elevator(new ElevatorReal());
                 algae = new Algae(new AlgaeReal());
                 break;
             case kSimulation:
@@ -54,6 +59,7 @@ public class RobotContainer {
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
+                elevator = new Elevator(new ElevatorIO() {});
                 algae = new Algae(new AlgaeIO() {});
         }
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
@@ -68,7 +74,23 @@ public class RobotContainer {
      * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
-    private void configureButtonBindings() {}
+    private void configureButtonBindings() {
+        SmartDashboard.putNumber("height", 40);
+        SmartDashboard.putNumber("voltage", 0);
+    }
+
+    /**
+     * operator configure binds
+     */
+    public void configureOperatorBinds() {
+        operator.x().whileTrue(algae.runAlgaeIntake());
+        operator.y().whileTrue(algae.runAlgaeOuttake());
+        operator.a().whileTrue(algae.algaeWristDown());
+        operator.b().whileTrue(algae.algaeWristUp());
+
+        operator.povUp().whileTrue(elevator.setVoltage(() -> 5));
+        operator.povDown().whileTrue(elevator.setVoltage(() -> -5));
+    }
 
     /**
      * Gets the user's selected autonomous command.
@@ -86,16 +108,5 @@ public class RobotContainer {
                 autocommand = new InstantCommand();
         }
         return autocommand;
-    }
-
-    /**
-     * configure binds
-     */
-    public void configureOperatorBinds() {
-        operator.x().whileTrue(algae.runAlgaeIntake());
-        operator.y().whileTrue(algae.runAlgaeOuttake());
-        operator.a().whileTrue(algae.algaeWristDown());
-        operator.b().whileTrue(algae.algaeWristUp());
-
     }
 }

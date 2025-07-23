@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Distance;
 
 /**
  * Constants file.
@@ -28,6 +29,17 @@ public final class Constants {
      * Motor CAN id's.
      */
     public static final class Motors {
+    }
+
+    /**
+     * Elevator Constants
+     */
+    public static final class Elevator {
+        public static final Distance HOME = null;
+        public static final Distance P0 = null; // Coral 1
+        public static final Distance P1 = null; // Coral 2
+        public static final Distance P2 = null; // Coral 3
+        public static final Distance P3 = null; // COral 4
     }
 
     /**
