@@ -1,4 +1,4 @@
-package frc.robot.subsystems.coralintake;
+package frc.robot.subsystems.coralIntake;
 
 import org.littletonrobotics.junction.AutoLog;
 
