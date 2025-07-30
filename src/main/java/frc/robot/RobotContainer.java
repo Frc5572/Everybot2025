@@ -15,12 +15,16 @@ import frc.robot.Robot.RobotRunType;
 import frc.robot.subsystems.algae.Algae;
 import frc.robot.subsystems.algae.AlgaeIO;
 import frc.robot.subsystems.algae.AlgaeReal;
+import frc.robot.subsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralIntake.CoralIntakeIO;
+import frc.robot.subsystems.coralIntake.CoralIntakeReal;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorReal;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveReal;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -39,6 +43,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private Swerve swerve;
+    private CoralIntake coralintake;
     private Elevator elevator;
     private Algae algae;
 
@@ -50,16 +55,20 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Wait 1 Second", "wait");
         switch (runtimeType) {
             case kReal:
+                // drivetrain = new Drivetrain(new DrivetrainReal());
                 swerve = new Swerve(new SwerveReal());
+                coralintake = new CoralIntake(new CoralIntakeReal());
                 elevator = new Elevator(new ElevatorReal());
                 algae = new Algae(new AlgaeReal());
                 break;
+
             case kSimulation:
                 // drivetrain = new Drivetrain(new DrivetrainSim() {});
 
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
+                coralintake = new CoralIntake(new CoralIntakeIO() {});
                 elevator = new Elevator(new ElevatorIO() {});
                 algae = new Algae(new AlgaeIO() {});
         }
@@ -92,6 +101,11 @@ public class RobotContainer {
 
         operator.povUp().whileTrue(elevator.setVoltage(() -> 5));
         operator.povDown().whileTrue(elevator.setVoltage(() -> -5));
+
+        operator.leftTrigger().whileTrue(coralintake.runCoralIntake());
+        operator.rightTrigger().whileTrue(coralintake.runCoralOuttake());
+        operator.rightBumper().whileTrue(coralintake.wristUp());
+        operator.leftBumper().whileTrue(coralintake.wristDown());
     }
 
     private void setupDriver() {

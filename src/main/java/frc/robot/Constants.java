@@ -159,4 +159,25 @@ public final class Constants {
 
     }
 
+    /**
+     * Coral Subsystem constants
+     */
+    public static final class CoralSubsystem {
+        // public static final int kWristMotorCanId = 0;
+        public static final int kIntakeMotorCanId = 22;
+        public static final int kcoralWristMotorCanId = 15;
+        public static final double INTAKE_VOLTAGE = 0.0;
+        public static final double OUTTAKE_VOLTAGE = 0.0;
+
+
+
+    }
+
+
+
+    // public static final class IntakeSetpoints {
+    // public static final double kForward = 0;
+    // public static final double kReverse = 0;
+    // }
+
 }
