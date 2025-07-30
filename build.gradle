@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2025.3.1"
+    id "edu.wpi.first.GradleRIO" version "2025.3.2"
     id "com.peterabeles.gversion" version "1.10"
 }
 
@@ -55,9 +55,9 @@ def includeDesktopSupport = false
 repositories {
     mavenLocal()
     maven { url 'https://jitpack.io' }
-    if(System.getenv("GITHUB_ACTOR") == null || System.getenv("GITHUB_ACTOR").equals("")) {
-        maven { url 'https://maven-clone.frc5572.org/' }
-    }
+    // if(System.getenv("GITHUB_ACTOR") == null || System.getenv("GITHUB_ACTOR").equals("")) {
+    maven { url 'https://maven-clone.frc5572.org/' }
+    // }
 }
 task(replayWatch, type: JavaExec) {
     mainClass = "org.littletonrobotics.junction.ReplayWatch"
