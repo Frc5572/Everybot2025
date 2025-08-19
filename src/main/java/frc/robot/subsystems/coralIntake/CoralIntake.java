@@ -1,4 +1,4 @@
-package frc.robot.subsystems.coralIntake;
+package frc.robot.subsystems.Coralintake;
 
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;

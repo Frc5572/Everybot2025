@@ -1,4 +1,4 @@
-package frc.robot.subsystems.coralIntake;
+package frc.robot.subsystems.Coralintake;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
