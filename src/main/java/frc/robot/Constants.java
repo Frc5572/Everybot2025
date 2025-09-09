@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
+import frc.robot.subsystems.swerve.ModuleConstants;
 
 /**
  * Constants file.
@@ -78,8 +79,8 @@ public final class Constants {
 
         public static final double trackWidth = Units.inchesToMeters(21.5);
         public static final double wheelBase = Units.inchesToMeters(23.5);
-        public static final double wheelDiameter = Units.inchesToMeters(3.0);
-        public static final double wheelCircumference = wheelDiameter * Math.PI;
+        public static final double wheelRadius = Units.inchesToMeters(1.5);
+        public static final double wheelCircumference = wheelRadius * 2.0 * Math.PI;
 
 
         public static final double maxSpeed = 4.0;
@@ -108,54 +109,15 @@ public final class Constants {
                 new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
                 new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
-        /**
-         * Front Left Module
-         */
-        public static final class Mod0 {
-            public static final int angleMotorID = 1;
-            public static final int driveMotorID = 2;
-            public static final int canCoderID = 9;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(.355713);
-
-
-        }
-
-        /**
-         * Front Right Module
-         */
-        public static final class Mod1 {
-            public static final int angleMotorID = 3;
-            public static final int driveMotorID = 4;
-            public static final int canCoderID = 10;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(.310547);
-
-
-        }
-
-        /**
-         * Back Left Module
-         */
-        public static final class Mod2 {
-            public static final int angleMotorID = 5;
-            public static final int driveMotorID = 6;
-            public static final int canCoderID = 11;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(-.059570);
-
-
-        }
-
-        /**
-         * Back Right Module
-         */
-        public static final class Mod3 {
-            public static final int angleMotorID = 7;
-            public static final int driveMotorID = 8;
-            public static final int canCoderID = 12;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(.338867);
-
-
-        }
-
+        public static final ModuleConstants[] moduleConstants = new ModuleConstants[] {
+            // Front Left
+            new ModuleConstants(2, 1, 9, Rotation2d.fromRotations(.355713)),
+            // Front Right
+            new ModuleConstants(4, 3, 10, Rotation2d.fromRotations(.310547)),
+            // Back Left
+            new ModuleConstants(6, 5, 11, Rotation2d.fromRotations(-.059570)),
+            // Back Right
+            new ModuleConstants(8, 7, 12, Rotation2d.fromRotations(.338867))};
 
     }
 

@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -18,9 +17,11 @@ import frc.robot.subsystems.algae.AlgaeReal;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorReal;
+import frc.robot.subsystems.swerve.GyroIO;
+import frc.robot.subsystems.swerve.GyroNavX;
+import frc.robot.subsystems.swerve.ModuleIO;
+import frc.robot.subsystems.swerve.ModuleSparkMax;
 import frc.robot.subsystems.swerve.Swerve;
-import frc.robot.subsystems.swerve.SwerveIO;
-import frc.robot.subsystems.swerve.SwerveReal;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -50,7 +51,7 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Wait 1 Second", "wait");
         switch (runtimeType) {
             case kReal:
-                swerve = new Swerve(new SwerveReal());
+                swerve = new Swerve(new GyroNavX(), ModuleSparkMax::new);
                 elevator = new Elevator(new ElevatorReal());
                 algae = new Algae(new AlgaeReal());
                 break;
@@ -59,11 +60,12 @@ public class RobotContainer {
 
                 break;
             default:
-                swerve = new Swerve(new SwerveIO() {});
+                swerve = new Swerve(new GyroIO.Empty(), ModuleIO.Empty::new);
                 elevator = new Elevator(new ElevatorIO() {});
                 algae = new Algae(new AlgaeIO() {});
         }
-        swerve.setDefaultCommand(swerve.teleOPDrive(driver));
+        swerve.setDefaultCommand(
+            swerve.teleopDrive(driver::getLeftX, driver::getLeftY, driver::getRightX));
         // Configure the button bindings
         configureButtonBindings();
         setupDriver();
@@ -95,7 +97,7 @@ public class RobotContainer {
     }
 
     private void setupDriver() {
-        driver.y().onTrue(Commands.runOnce(() -> swerve.resetFieldRelativeOffset()));
+        driver.y().onTrue(swerve.resetFieldOrientation());
     }
 
     /**
