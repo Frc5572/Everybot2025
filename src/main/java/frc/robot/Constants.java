@@ -1,5 +1,6 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Inches;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.studica.frc.AHRS.NavXComType;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -36,10 +37,10 @@ public final class Constants {
      */
     public static final class Elevator {
         public static final Distance HOME = null;
-        public static final Distance P0 = null; // Coral 1
-        public static final Distance P1 = null; // Coral 2
-        public static final Distance P2 = null; // Coral 3
-        public static final Distance P3 = null; // COral 4
+        public static final Distance P0 = Inches.of(0); // Coral 1
+        public static final Distance P1 = Inches.of(0); // Coral 2
+        public static final Distance P2 = Inches.of(0); // Coral 3
+        public static final Distance P3 = Inches.of(0); // COral 4
     }
 
     /**

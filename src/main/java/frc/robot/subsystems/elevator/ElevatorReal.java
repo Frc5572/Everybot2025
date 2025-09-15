@@ -12,15 +12,15 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 /** Elevator Real layer */
 public class ElevatorReal implements ElevatorIO {
     private final SparkMax elevatorMotor = new SparkMax(10, MotorType.kBrushless);
-    private final SparkBaseConfig elevatorConf = new SparkMaxConfig();
+    private final SparkMaxConfig elevatorConf = new SparkMaxConfig();
     private final SparkClosedLoopController controller = elevatorMotor.getClosedLoopController();
     private final RelativeEncoder encoder = elevatorMotor.getEncoder();
+    private final SparkMaxConfig config = new SparkMaxConfig();
 
     public ElevatorReal() {
         config();

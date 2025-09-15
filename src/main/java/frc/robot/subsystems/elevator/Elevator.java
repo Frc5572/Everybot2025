@@ -59,8 +59,11 @@ public class Elevator extends SubsystemBase {
         return runOnce(() -> {
             Logger.recordOutput("Elevator/targetHeight", height.get().in(Meters));
             io.setPosition(height.get().in(Meters));
-        }).andThen(Commands
-            .waitUntil(() -> Math.abs(inputs.position.in(Inches) - height.get().in(Inches)) < 1));
+        }).andThen(Commands.waitUntil(() -> errorCheck(height)));
+    }
+
+    public Boolean errorCheck(Supplier<Distance> height) {
+        return Math.abs(inputs.position.in(Inches) - height.get().in(Inches)) < 1;
     }
 
     public Command setVoltage(DoubleSupplier v) {

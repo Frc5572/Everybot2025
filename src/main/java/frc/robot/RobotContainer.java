@@ -96,6 +96,7 @@ public class RobotContainer {
 
     private void setupDriver() {
         driver.y().onTrue(Commands.runOnce(() -> swerve.resetFieldRelativeOffset()));
+        driver.b().onTrue(elevator.p1());
     }
 
     /**
