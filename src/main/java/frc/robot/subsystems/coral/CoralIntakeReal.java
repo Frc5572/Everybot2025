@@ -1,6 +1,6 @@
 package frc.robot.subsystems.coral;
 
-import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -19,7 +19,7 @@ public class CoralIntakeReal implements CoralIntakeIO {
     public SparkMax coralWristMotor =
         new SparkMax(Constants.CoralSubsystem.kcoralWristMotorCanId, MotorType.kBrushless);
     public SparkClosedLoopController wristController = coralWristMotor.getClosedLoopController();
-    public AbsoluteEncoder encoder = coralWristMotor.getAbsoluteEncoder();
+    public RelativeEncoder encoder = coralWristMotor.getEncoder();
     public SparkMaxConfig intakeconfig = new SparkMaxConfig();
     public SparkMaxConfig coralWristMotorconfig = new SparkMaxConfig();
 
@@ -28,6 +28,7 @@ public class CoralIntakeReal implements CoralIntakeIO {
      * Coral Intake Real
      */
     public CoralIntakeReal() {
+        encoder.setPosition(0.0);
         coralWristMotorconfig.idleMode(IdleMode.kBrake);
         coralWristMotor.configure(coralWristMotorconfig, ResetMode.kNoResetSafeParameters,
             PersistMode.kPersistParameters);
