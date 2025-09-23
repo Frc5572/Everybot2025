@@ -73,6 +73,7 @@ public class RobotContainer {
                 algae = new Algae(new AlgaeIO() {});
         }
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
+        coralintake.setDefaultCommand(coralintake.controlWristCommand(driver));
         // Configure the button bindings
         configureButtonBindings();
         setupDriver();

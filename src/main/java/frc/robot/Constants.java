@@ -168,8 +168,15 @@ public final class Constants {
         public static final int kcoralWristMotorCanId = 15;
         public static final double INTAKE_VOLTAGE = 0.0;
         public static final double OUTTAKE_VOLTAGE = 0.0;
-
-
+        public static final double KP = 0;
+        public static final double KI = 0;
+        public static final double KD = 0;
+        public static final double FF = 0;
+        public static final double MAX_ACCELERATION = 0;
+        public static final double MAX_VELOCITY = 0;
+        public static final double ALLOWED_CLOSED_LOOP_ERROR = 0;
+        public static final double MAX_ANGLE = 0;
+        public static final double MIN_ANGLE = 0;
 
     }
 
