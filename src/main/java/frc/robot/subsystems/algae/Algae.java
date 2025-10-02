@@ -1,6 +1,8 @@
 package frc.robot.subsystems.algae;
 
+import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,7 +15,17 @@ public class Algae extends SubsystemBase {
     private AlgaeIO io;
     private AlgaeInputsAutoLogged inputs = new AlgaeInputsAutoLogged();
 
+    private double kP = 3.0;
+    private double kI = 0.0;
+    private double kD = 0.0;
+    private double kFF = 0.0;
+    private double kS = 0.0;
 
+    private static final String kPString = "Algae/kP";
+    private static final String kIString = "Algae/kI";
+    private static final String kDString = "Algae/kD";
+    private static final String kFString = "Algae/kFF";
+    private static final String kSString = "Algae/kS";
 
     /**
      * Algae subsystem
@@ -23,12 +35,54 @@ public class Algae extends SubsystemBase {
     public Algae(AlgaeIO io) {
         this.io = io;
         io.updateInputs(inputs);
+
+        SmartDashboard.putNumber(kPString, kP);
+        SmartDashboard.putNumber(kIString, kI);
+        SmartDashboard.putNumber(kDString, kD);
+        SmartDashboard.putNumber(kFString, kFF);
+        SmartDashboard.putNumber(kSString, kS);
     }
+
+    private boolean positionControl;
+    private double controlParam;
 
     @Override
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Algae", inputs);
+
+        double newKp = SmartDashboard.getNumber(kPString, 0.0);
+        double newKd = SmartDashboard.getNumber(kIString, 0.0);
+        double newKi = SmartDashboard.getNumber(kDString, 0.0);
+        double newKff = SmartDashboard.getNumber(kFString, 0.0);
+        double newKs = SmartDashboard.getNumber(kSString, 0.0);
+
+        if (newKp != kP || newKd != kD || newKi != kI || newKff != kFF || newKs != kS) {
+            kP = newKp;
+            kI = newKi;
+            kD = newKd;
+            kFF = newKff;
+            kS = newKs;
+
+            io.setPID(newKp, newKi, newKd);
+        }
+
+        if (positionControl) {
+            double ff = Math.signum(inputs.algaewristPosition - controlParam) * kS;
+            io.setPosition(controlParam, ff);
+        } else {
+            io.setAlgaeWristVoltage(controlParam);
+        }
+    }
+
+    private void setPosition(double position) {
+        this.positionControl = true;
+        this.controlParam = position;
+    }
+
+    private void setVoltage(double voltage) {
+        this.positionControl = false;
+        this.controlParam = voltage;
     }
 
     /**
@@ -40,18 +94,6 @@ public class Algae extends SubsystemBase {
         Logger.recordOutput("Algae/Voltage", voltage);
         io.setAlgaeVoltage(voltage);
     }
-
-
-    /**
-     * Set motor power for the wrist
-     *
-     * @param voltage voltage for the motor for the wrist
-     */
-    public void setAlgaeWristVoltage(double voltage) {
-        io.setAlgaeWristVolatage(voltage);
-    }
-
-
 
     /**
      * Command for the intake set intake voltage
@@ -73,22 +115,15 @@ public class Algae extends SubsystemBase {
             () -> setAlgaeVoltage(0));
     }
 
-    /**
-     * Command for the Wrist to go down set motor voltage negative
-     *
-     * @return Command
-     */
-    public Command algaeWristDown() {
-        return Commands.runEnd(() -> setAlgaeWristVoltage(-2), () -> setAlgaeWristVoltage(0));
+    public Command setVoltage(DoubleSupplier supplier) {
+        return this.run(() -> {
+            this.setVoltage(supplier.getAsDouble());
+        });
     }
 
-    /**
-     * Command for the Wrist to go up set motor voltage positive
-     *
-     * @return Command
-     */
-    public Command algaeWristUp() {
-        return Commands.runEnd(() -> setAlgaeWristVoltage(2), () -> setAlgaeWristVoltage(0));
-
+    public Command moveTo(DoubleSupplier angle) {
+        return this.run(() -> {
+            this.setPosition(angle.getAsDouble());
+        });
     }
 }

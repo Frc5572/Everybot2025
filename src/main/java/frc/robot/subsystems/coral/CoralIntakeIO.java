@@ -15,15 +15,13 @@ public interface CoralIntakeIO {
 
     }
 
-    public default void updateInputs(CoralIntakeInputs inputs) {}
+    public void updateInputs(CoralIntakeInputs inputs);
 
-    public default void setCoralVoltage(double voltage) {}
+    public void setCoralVoltage(double voltage);
 
-    public default void setWristVolatage(double voltage) {}
+    public void setVoltage(double voltage);
 
-    public default void setWristSetPoint(double setPoint) {}
+    public void setPosition(double setPoint, double feedforward);
 
-    public default double getWristRotations() {
-        return 0;
-    }
+    public void setPID(double kP, double kI, double kD);
 }

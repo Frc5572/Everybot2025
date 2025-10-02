@@ -1,25 +1,19 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot.RobotRunType;
 import frc.robot.subsystems.algae.Algae;
-import frc.robot.subsystems.algae.AlgaeIO;
 import frc.robot.subsystems.algae.AlgaeReal;
 import frc.robot.subsystems.coral.CoralIntake;
-import frc.robot.subsystems.coral.CoralIntakeIO;
 import frc.robot.subsystems.coral.CoralIntakeReal;
 import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorReal;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
@@ -36,7 +30,6 @@ public class RobotContainer {
     public static ShuffleboardTab mainDriverTab = Shuffleboard.getTab("Main Driver");
     /* Controllers */
     private final CommandXboxController driver = new CommandXboxController(Constants.driverID);
-    private final CommandXboxController operator = new CommandXboxController(Constants.operatorID);
 
     // Initialize AutoChooser Sendable
     private final SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -68,51 +61,23 @@ public class RobotContainer {
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
-                coralintake = new CoralIntake(new CoralIntakeIO() {});
-                elevator = new Elevator(new ElevatorIO() {});
-                algae = new Algae(new AlgaeIO() {});
+                // coralintake = new CoralIntake(new CoralIntakeIO() {});
+                // elevator = new Elevator(new ElevatorIO() {});
+                // algae = new Algae(new AlgaeIO() {});
         }
-        swerve.setDefaultCommand(swerve.teleOPDrive(driver));
-        coralintake.setDefaultCommand(coralintake.controlWristCommand(driver));
+        // swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
-        configureButtonBindings();
-        setupDriver();
         configureOperatorBinds();
-    }
-
-    /**
-     * Use this method to define your button->command mappings. Buttons can be created by
-     * instantiating a {@link GenericHID} or one of its subclasses
-     * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-     * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
-        SmartDashboard.putNumber("height", 40);
-        SmartDashboard.putNumber("voltage", 0);
     }
 
     /**
      * operator configure binds
      */
     public void configureOperatorBinds() {
-        operator.x().whileTrue(algae.runAlgaeIntake());
-        operator.y().whileTrue(algae.runAlgaeOuttake());
-        operator.a().whileTrue(algae.algaeWristDown());
-        operator.b().whileTrue(algae.algaeWristUp());
+        driver.povUp().whileTrue(algae.setVoltage(() -> 5)).onFalse(algae.setVoltage(() -> 0.0));
+        driver.povDown().whileTrue(algae.setVoltage(() -> -5)).onFalse(algae.setVoltage(() -> 0.0));
 
-        operator.povUp().whileTrue(elevator.setVoltage(() -> 5));
-        operator.povDown().whileTrue(elevator.setVoltage(() -> -5));
-
-        operator.leftTrigger().whileTrue(coralintake.runCoralIntake());
-        operator.rightTrigger().whileTrue(coralintake.runCoralOuttake());
-        operator.rightBumper().whileTrue(coralintake.wristVoltage(() -> 1.0))
-            .onFalse(coralintake.wristVoltage(() -> 0.0));
-        operator.leftBumper().whileTrue(coralintake.wristVoltage(() -> -1.0))
-            .onFalse(coralintake.wristVoltage(() -> 0.0));
-    }
-
-    private void setupDriver() {
-        driver.y().onTrue(Commands.runOnce(() -> swerve.resetFieldRelativeOffset()));
+        driver.a().whileTrue(algae.moveTo(() -> -680.0)).onFalse(algae.setVoltage(() -> 0.0));
     }
 
     /**

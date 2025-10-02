@@ -2,10 +2,10 @@ package frc.robot.subsystems.coral;
 
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
 /**
@@ -14,6 +14,18 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class CoralIntake extends SubsystemBase {
     private CoralIntakeIO io;
     private CoralIntakeInputsAutoLogged inputs = new CoralIntakeInputsAutoLogged();
+
+    private double kP = 3.0;
+    private double kI = 0.0;
+    private double kD = 0.0;
+    private double kFF = 0.0;
+    private double kS = 0.0;
+
+    private static final String kPString = "Coral/kP";
+    private static final String kIString = "Coral/kI";
+    private static final String kDString = "Coral/kD";
+    private static final String kFString = "Coral/kFF";
+    private static final String kSString = "Coral/kS";
 
 
     /**
@@ -24,30 +36,65 @@ public class CoralIntake extends SubsystemBase {
     public CoralIntake(CoralIntakeIO io) {
         this.io = io;
         io.updateInputs(inputs);
+
+        SmartDashboard.putNumber(kPString, kP);
+        SmartDashboard.putNumber(kIString, kI);
+        SmartDashboard.putNumber(kDString, kD);
+        SmartDashboard.putNumber(kFString, kFF);
+        SmartDashboard.putNumber(kSString, kS);
     }
+
+    private boolean positionControl;
+    private double controlParam;
 
     @Override
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Coral", inputs);
+
+        double newKp = SmartDashboard.getNumber(kPString, 0.0);
+        double newKd = SmartDashboard.getNumber(kIString, 0.0);
+        double newKi = SmartDashboard.getNumber(kDString, 0.0);
+        double newKff = SmartDashboard.getNumber(kFString, 0.0);
+        double newKs = SmartDashboard.getNumber(kSString, 0.0);
+
+        if (newKp != kP || newKd != kD || newKi != kI || newKff != kFF || newKs != kS) {
+            kP = newKp;
+            kI = newKi;
+            kD = newKd;
+            kFF = newKff;
+            kS = newKs;
+
+            io.setPID(newKp, newKi, newKd);
+        }
+
+        if (positionControl) {
+            double ff = Math.signum(inputs.wristAngle - controlParam) * kS;
+            io.setPosition(controlParam, ff);
+        } else {
+            io.setVoltage(controlParam);
+        }
     }
 
-    private Command moveTo(DoubleSupplier angle) {
-        final double[] angleStore = new double[] {0.0};
-        return runOnce(() -> {
-            angleStore[0] = angle.getAsDouble();
-        }).andThen(runOnce(() -> {
-            io.setWristSetPoint(angleStore[0]);
-        })).andThen(Commands.waitUntil(() -> Math.abs(inputs.wristAngle - angleStore[0]) < 1));
+    private void setPosition(double position) {
+        this.positionControl = true;
+        this.controlParam = position;
     }
 
-    public Command controlWristCommand(CommandXboxController controller) {
-        return moveTo(() -> (io.getWristRotations() * 360) % 360 + controller.getLeftY());
+    private void setVoltage(double voltage) {
+        this.positionControl = false;
+        this.controlParam = voltage;
+    }
+
+    public Command moveTo(DoubleSupplier angle) {
+        return this.run(() -> {
+            this.setPosition(angle.getAsDouble());
+        });
     }
 
     public Command wristVoltage(DoubleSupplier voltage) {
         return this.run(() -> {
-            io.setWristVolatage(voltage.getAsDouble());
+            this.setVoltage(voltage.getAsDouble());
         });
     }
 

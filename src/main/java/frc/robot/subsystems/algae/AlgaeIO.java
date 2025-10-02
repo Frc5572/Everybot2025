@@ -13,13 +13,17 @@ public interface AlgaeIO {
     public static class AlgaeInputs {
         public double algaewristMotorVoltage;
         public double algaewristMotorAmp;
-
+        public double algaewristPosition;
     }
 
-    public default void updateInputs(AlgaeInputs inputs) {}
+    public void updateInputs(AlgaeInputs inputs);
 
-    public default void setAlgaeVoltage(double voltage) {}
+    public void setAlgaeVoltage(double voltage);
 
-    public default void setAlgaeWristVolatage(double voltage) {}
+    public void setAlgaeWristVoltage(double voltage);
+
+    public void setPosition(double setPoint, double feedforward);
+
+    public void setPID(double kP, double kI, double kD);
 
 }

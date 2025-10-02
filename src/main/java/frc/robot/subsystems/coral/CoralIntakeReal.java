@@ -1,6 +1,7 @@
 package frc.robot.subsystems.coral;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -29,15 +30,12 @@ public class CoralIntakeReal implements CoralIntakeIO {
     public CoralIntakeReal() {
         encoder.setPosition(0.0);
         coralWristMotorconfig.idleMode(IdleMode.kBrake);
-        coralWristMotor.configure(coralWristMotorconfig, ResetMode.kNoResetSafeParameters,
-            PersistMode.kPersistParameters);
+        coralWristMotorconfig.closedLoop.positionWrappingEnabled(false);
         coralWristMotorconfig.closedLoop.pidf(Constants.CoralSubsystem.KP,
             Constants.CoralSubsystem.KI, Constants.CoralSubsystem.KD, Constants.CoralSubsystem.FF);
-        coralWristMotorconfig.closedLoop.maxMotion
-            .maxVelocity(Constants.CoralSubsystem.MAX_VELOCITY)
-            .maxAcceleration(Constants.CoralSubsystem.MAX_ACCELERATION)
-            .allowedClosedLoopError(Constants.CoralSubsystem.ALLOWED_CLOSED_LOOP_ERROR);
-
+        coralWristMotorconfig.inverted(true);
+        coralWristMotor.configure(coralWristMotorconfig, ResetMode.kResetSafeParameters,
+            PersistMode.kPersistParameters);
         intakeconfig.idleMode(IdleMode.kBrake);
         intakeMotor.configure(intakeconfig, ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
@@ -46,7 +44,9 @@ public class CoralIntakeReal implements CoralIntakeIO {
 
 
     @Override
-    public void updateInputs(CoralIntakeInputs inputs) {}
+    public void updateInputs(CoralIntakeInputs inputs) {
+        inputs.wristAngle = encoder.getPosition();
+    }
 
     @Override
     public void setCoralVoltage(double voltage) {
@@ -54,17 +54,21 @@ public class CoralIntakeReal implements CoralIntakeIO {
     }
 
     @Override
-    public void setWristVolatage(double voltage) {
+    public void setVoltage(double voltage) {
         coralWristMotor.setVoltage(voltage);
     }
 
     @Override
-    public void setWristSetPoint(double setPoint) {
-        wristController.setReference(setPoint, ControlType.kPosition);
+    public void setPosition(double setPoint, double ff) {
+        wristController.setReference(setPoint, ControlType.kPosition, ClosedLoopSlot.kSlot0, ff);
     }
 
+
+
     @Override
-    public double getWristRotations() {
-        return encoder.getPosition();
+    public void setPID(double kP, double kI, double kD) {
+        coralWristMotorconfig.closedLoop.pidf(kP, kI, kD, 0.0, ClosedLoopSlot.kSlot0);
+        coralWristMotor.configure(coralWristMotorconfig, ResetMode.kNoResetSafeParameters,
+            PersistMode.kNoPersistParameters);
     }
 }

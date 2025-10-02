@@ -19,9 +19,11 @@ public interface ElevatorIO {
         Angle rotation = Rotations.of(0);
     }
 
-    public default void updateInputs(ElevatorInputs inputs) {}
+    public void updateInputs(ElevatorInputs inputs);
 
-    public default void setPosition(double position) {}
+    public void setPosition(double position, double ff);
 
-    public default void setVoltage(double v) {}
+    public void setVoltage(double v);
+
+    public void setPID(double kP, double kI, double kD, double kFF);
 }
