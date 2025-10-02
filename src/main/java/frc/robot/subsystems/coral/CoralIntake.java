@@ -1,11 +1,11 @@
 package frc.robot.subsystems.coral;
 
+import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants;
 
 
 /**
@@ -32,31 +32,22 @@ public class CoralIntake extends SubsystemBase {
         Logger.processInputs("Coral", inputs);
     }
 
-    public void setSetpoint(double setpoint) {
-        io.setWristSetPoint(setpoint);
-    }
-
-    public Command moveTo(double angle) {
+    private Command moveTo(DoubleSupplier angle) {
+        final double[] angleStore = new double[] {0.0};
         return runOnce(() -> {
-            Logger.recordOutput("targetangle", angle);
-            io.setWristSetPoint(angle / 360); // set wanted angle to angle arg
-        }).andThen(followAngle()).unless(() -> angle > Constants.CoralSubsystem.MAX_ANGLE) // unless
-            // >max
-            .unless(() -> angle < Constants.CoralSubsystem.MIN_ANGLE)// unluss <min
-            .andThen(Commands.waitUntil(() -> Math.abs(inputs.wristAngle - angle) < 1));
-        /*
-         * then wait until the real angle is within 1 degree of wanted
-         */
+            angleStore[0] = angle.getAsDouble();
+        }).andThen(runOnce(() -> {
+            io.setWristSetPoint(angleStore[0]);
+        })).andThen(Commands.waitUntil(() -> Math.abs(inputs.wristAngle - angleStore[0]) < 1));
     }
 
     public Command controlWristCommand(CommandXboxController controller) {
-        return Commands.runOnce(
-            () -> moveTo((io.getWristRotations() * 360) % 360 + controller.getLeftY()), this);
+        return moveTo(() -> (io.getWristRotations() * 360) % 360 + controller.getLeftY());
     }
 
-    public Command followAngle() {
+    public Command wristVoltage(DoubleSupplier voltage) {
         return this.run(() -> {
-            io.setWristSetPoint(io.getWristRotations());
+            io.setWristVolatage(voltage.getAsDouble());
         });
     }
 
@@ -65,22 +56,10 @@ public class CoralIntake extends SubsystemBase {
      *
      * @param voltage voltage for the motor for intake/outake
      */
-    public void setCoralVoltage(double voltage) {
+    private void setCoralVoltage(double voltage) {
         Logger.recordOutput("Coral/Voltage", voltage);
         io.setCoralVoltage(voltage);
     }
-
-
-    /**
-     * set motor power for the wrist
-     *
-     * @param voltage voltage for the motor for the wrist
-     */
-    public void setWristVoltage(double voltage) {
-        io.setWristVolatage(voltage);
-    }
-
-
 
     /**
      * Command for the intake set intake voltage
@@ -99,29 +78,5 @@ public class CoralIntake extends SubsystemBase {
     public Command runCoralOuttake() {
         return Commands.runEnd(() -> setCoralVoltage(-3), () -> setCoralVoltage(0));
     }
-
-    /**
-     * Command for the wrist going down set the wrist volage
-     *
-     * @return Command
-     */
-    public Command wristDown() {
-        return Commands.runEnd(() -> setWristVoltage(-10), () -> setWristVoltage(0));
-    }
-
-    /**
-     * Command for the wrist going up set the wrist voltage
-     *
-     * @return Command
-     */
-    public Command wristUp() {
-        return Commands.runEnd(() -> setWristVoltage(10), () -> setWristVoltage(0));
-
-    }
-
-    // public void runCoralWristManually(CommandXboxController controller) {
-    // controller.leftBumper()
-    // .whileTrue(() -> setWristAngle(getWristAngle().minus(Rotation2d.fromDegrees(2))));
-    // }
 
 }

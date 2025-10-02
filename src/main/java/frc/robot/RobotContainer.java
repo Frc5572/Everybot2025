@@ -105,8 +105,10 @@ public class RobotContainer {
 
         operator.leftTrigger().whileTrue(coralintake.runCoralIntake());
         operator.rightTrigger().whileTrue(coralintake.runCoralOuttake());
-        operator.rightBumper().whileTrue(coralintake.wristUp());
-        operator.leftBumper().whileTrue(coralintake.wristDown());
+        operator.rightBumper().whileTrue(coralintake.wristVoltage(() -> 1.0))
+            .onFalse(coralintake.wristVoltage(() -> 0.0));
+        operator.leftBumper().whileTrue(coralintake.wristVoltage(() -> -1.0))
+            .onFalse(coralintake.wristVoltage(() -> 0.0));
     }
 
     private void setupDriver() {

@@ -23,7 +23,6 @@ public class CoralIntakeReal implements CoralIntakeIO {
     public SparkMaxConfig intakeconfig = new SparkMaxConfig();
     public SparkMaxConfig coralWristMotorconfig = new SparkMaxConfig();
 
-
     /**
      * Coral Intake Real
      */
