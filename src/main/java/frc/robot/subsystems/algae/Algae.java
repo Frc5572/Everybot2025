@@ -41,6 +41,8 @@ public class Algae extends SubsystemBase {
         SmartDashboard.putNumber(kDString, kD);
         SmartDashboard.putNumber(kFString, kFF);
         SmartDashboard.putNumber(kSString, kS);
+
+        io.setPID(kP, kI, kD);
     }
 
     private boolean positionControl;

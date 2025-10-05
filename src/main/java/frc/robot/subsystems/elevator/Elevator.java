@@ -35,6 +35,9 @@ public class Elevator extends SubsystemBase {
         SmartDashboard.putNumber(kDString, kD);
         SmartDashboard.putNumber(kFString, kFF);
         SmartDashboard.putNumber(kSString, kS);
+
+
+        io.setPID(kP, kI, kD, kFF);
     }
 
     private boolean positionControl;

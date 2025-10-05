@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -30,6 +31,8 @@ public class RobotContainer {
     public static ShuffleboardTab mainDriverTab = Shuffleboard.getTab("Main Driver");
     /* Controllers */
     private final CommandXboxController driver = new CommandXboxController(Constants.driverID);
+    private final CommandXboxController pitController =
+        new CommandXboxController(Constants.operatorID);
 
     // Initialize AutoChooser Sendable
     private final SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -65,7 +68,7 @@ public class RobotContainer {
                 // elevator = new Elevator(new ElevatorIO() {});
                 // algae = new Algae(new AlgaeIO() {});
         }
-        // swerve.setDefaultCommand(swerve.teleOPDrive(driver));
+        swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
         configureOperatorBinds();
     }
@@ -74,10 +77,42 @@ public class RobotContainer {
      * operator configure binds
      */
     public void configureOperatorBinds() {
-        driver.povUp().whileTrue(algae.setVoltage(() -> 5)).onFalse(algae.setVoltage(() -> 0.0));
-        driver.povDown().whileTrue(algae.setVoltage(() -> -5)).onFalse(algae.setVoltage(() -> 0.0));
+        pitController.povLeft().whileTrue(elevator.setVoltage(() -> 5))
+            .onFalse(elevator.setVoltage(() -> 0.0));
+        pitController.povRight().whileTrue(elevator.setVoltage(() -> -5))
+            .onFalse(elevator.setVoltage(() -> 0.0));
+        pitController.povUp().whileTrue(coralintake.wristVoltage(() -> 5))
+            .onFalse(coralintake.wristVoltage(() -> 0.0));
+        pitController.povDown().whileTrue(coralintake.wristVoltage(() -> -5))
+            .onFalse(coralintake.wristVoltage(() -> 0.0));
 
-        driver.a().whileTrue(algae.moveTo(() -> -680.0)).onFalse(algae.setVoltage(() -> 0.0));
+        // RobotModeTriggers.autonomous().onTrue(
+        // algae.moveTo(() -> -680.0).withTimeout(1.0).andThen(algae.setVoltage(() -> 0.0)));
+
+        // driver.a().whileTrue(algae.moveTo(() -> -680.0)).onFalse(algae.setVoltage(() -> 0.0));
+
+        double l2height = 0.0;
+        double l3height = 0.85;
+        double feedheight = 0.0;
+        double l2angle = 227.0;
+        double l3angle = 227.0;
+        double feedangle = 54.0;
+
+        driver.leftBumper()
+            .whileTrue(elevator.moveTo(() -> l2height).alongWith(coralintake.moveTo(() -> l2angle)))
+            .onFalse(
+                elevator.moveTo(() -> feedheight).alongWith(coralintake.moveTo(() -> feedangle)));
+        driver.rightBumper()
+            .whileTrue(elevator.moveTo(() -> l3height).alongWith(coralintake.moveTo(() -> l3angle)))
+            .onFalse(
+                elevator.moveTo(() -> feedheight).alongWith(coralintake.moveTo(() -> feedangle)));
+        driver.leftTrigger().or(driver.rightTrigger()).whileTrue(coralintake.runCoralOuttake());
+        driver.a().whileTrue(coralintake.runCoralIntake());
+        pitController.leftTrigger().or(pitController.rightTrigger())
+            .whileTrue(coralintake.runCoralOuttake());
+        pitController.a().whileTrue(coralintake.runCoralIntake());
+
+        driver.y().onTrue(Commands.runOnce(() -> swerve.resetFieldRelativeOffset()));
     }
 
     /**

@@ -42,6 +42,8 @@ public class CoralIntake extends SubsystemBase {
         SmartDashboard.putNumber(kDString, kD);
         SmartDashboard.putNumber(kFString, kFF);
         SmartDashboard.putNumber(kSString, kS);
+
+        io.setPID(kP, kI, kD);
     }
 
     private boolean positionControl;
@@ -70,8 +72,10 @@ public class CoralIntake extends SubsystemBase {
 
         if (positionControl) {
             double ff = Math.signum(inputs.wristAngle - controlParam) * kS;
+            Logger.recordOutput("coralIntake", "position: " + controlParam + ", ff: " + ff);
             io.setPosition(controlParam, ff);
         } else {
+            Logger.recordOutput("coralIntake", "voltage: " + controlParam);
             io.setVoltage(controlParam);
         }
     }
@@ -114,7 +118,7 @@ public class CoralIntake extends SubsystemBase {
      * @return Command
      */
     public Command runCoralIntake() {
-        return Commands.runEnd(() -> setCoralVoltage(3), () -> setCoralVoltage(0));
+        return Commands.runEnd(() -> setCoralVoltage(4.5), () -> setCoralVoltage(0));
     }
 
     /**
@@ -123,7 +127,7 @@ public class CoralIntake extends SubsystemBase {
      * @return Command
      */
     public Command runCoralOuttake() {
-        return Commands.runEnd(() -> setCoralVoltage(-3), () -> setCoralVoltage(0));
+        return Commands.runEnd(() -> setCoralVoltage(-4.5), () -> setCoralVoltage(0));
     }
 
 }
