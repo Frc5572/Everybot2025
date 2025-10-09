@@ -135,7 +135,7 @@ public class RobotContainer {
         driver.y().onTrue(Commands.runOnce(() -> swerve.resetFieldRelativeOffset()));
 
         RobotModeTriggers.autonomous()
-            .onTrue(swerve.run(() -> swerve.drive(new Translation2d(1.0, 0.0), 0.0, false))
+            .onTrue(swerve.run(() -> swerve.drive(new Translation2d(-1.0, 0.0), 0.0, false))
                 .withTimeout(2.0)
                 .andThen(swerve.runOnce(() -> swerve.drive(Translation2d.kZero, 0.0, false))));
     }
