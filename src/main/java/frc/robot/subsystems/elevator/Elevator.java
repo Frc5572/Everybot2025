@@ -77,11 +77,6 @@ public class Elevator extends SubsystemBase {
         this.controlParam = position;
     }
 
-    private void setVoltage(double voltage) {
-        this.positionControl = false;
-        this.controlParam = voltage;
-    }
-
     /**
      * Moves to given measurement
      */
@@ -89,6 +84,11 @@ public class Elevator extends SubsystemBase {
         return this.run(() -> {
             this.setPosition(height.getAsDouble());
         });
+    }
+
+    private void setVoltage(double voltage) {
+        this.positionControl = false;
+        this.controlParam = voltage;
     }
 
     public Command setVoltage(DoubleSupplier v) {

@@ -82,11 +82,6 @@ public class Algae extends SubsystemBase {
         this.controlParam = position;
     }
 
-    private void setVoltage(double voltage) {
-        this.positionControl = false;
-        this.controlParam = voltage;
-    }
-
     /**
      * Set Motor power for the Algae intake/outake
      *
@@ -124,6 +119,12 @@ public class Algae extends SubsystemBase {
     public Command runAlgaeOuttake() {
         return Commands.runEnd(() -> setAlgaeVoltage(Constants.AlgaeSubsystem.OUTTAKE_VOLTAGE),
             () -> setAlgaeVoltage(0));
+    }
+
+
+    private void setVoltage(double voltage) {
+        this.positionControl = false;
+        this.controlParam = voltage;
     }
 
 
