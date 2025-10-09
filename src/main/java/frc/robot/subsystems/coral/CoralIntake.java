@@ -90,12 +90,20 @@ public class CoralIntake extends SubsystemBase {
         this.controlParam = voltage;
     }
 
+
+    /**
+     * Moves to given measurement
+     */
     public Command moveTo(DoubleSupplier angle) {
         return this.run(() -> {
             this.setPosition(angle.getAsDouble());
         });
     }
 
+
+    /**
+     * Moves to given measurement
+     */
     public Command wristVoltage(DoubleSupplier voltage) {
         return this.run(() -> {
             this.setVoltage(voltage.getAsDouble());

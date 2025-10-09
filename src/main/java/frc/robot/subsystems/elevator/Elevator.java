@@ -82,6 +82,9 @@ public class Elevator extends SubsystemBase {
         this.controlParam = voltage;
     }
 
+    /**
+     * Moves to given measurement
+     */
     public Command moveTo(DoubleSupplier height) {
         return this.run(() -> {
             this.setPosition(height.getAsDouble());

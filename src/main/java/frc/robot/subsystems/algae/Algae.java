@@ -126,12 +126,21 @@ public class Algae extends SubsystemBase {
             () -> setAlgaeVoltage(0));
     }
 
+
+    /**
+     * Moves to given measurement
+     */
     public Command setVoltage(DoubleSupplier supplier) {
         return this.run(() -> {
             this.setVoltage(supplier.getAsDouble());
         });
     }
 
+
+
+    /**
+     * Moves to given measurement
+     */
     public Command moveTo(DoubleSupplier angle) {
         return this.run(() -> {
             this.setPosition(angle.getAsDouble());
