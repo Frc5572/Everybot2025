@@ -69,7 +69,7 @@ public class Robot extends LoggedRobot {
 
 
         if (isReal()) {
-            Logger.addDataReceiver(new WPILOGWriter("/media/sda1")); // Log to a USB stick
+            // Logger.addDataReceiver(new WPILOGWriter("/media/sda1")); // Log to a USB stick
             Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
             new PowerDistribution(1, ModuleType.kCTRE); // Enables power distribution logging
             setUseTiming(true);
