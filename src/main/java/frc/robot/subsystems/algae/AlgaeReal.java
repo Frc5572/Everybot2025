@@ -1,7 +1,11 @@
 package frc.robot.subsystems.algae;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -17,7 +21,8 @@ public class AlgaeReal implements AlgaeIO {
         new SparkMax(Constants.AlgaeSubsystem.kalgaeIntakeMotorCanId, MotorType.kBrushless);
     public SparkMax algaeWristMotor =
         new SparkMax(Constants.AlgaeSubsystem.kalgaeWristMotorCanId, MotorType.kBrushless);
-
+    public SparkClosedLoopController wristController = algaeWristMotor.getClosedLoopController();
+    public RelativeEncoder encoder = algaeWristMotor.getEncoder();
 
     public SparkMaxConfig algaeintakeconfig = new SparkMaxConfig();
     public SparkMaxConfig algaeWristMotorconfig = new SparkMaxConfig();
@@ -28,7 +33,10 @@ public class AlgaeReal implements AlgaeIO {
      * Algae Real
      */
     public AlgaeReal() {
+        encoder.setPosition(0.0);
+
         algaeWristMotorconfig.idleMode(IdleMode.kBrake);
+        algaeWristMotorconfig.closedLoop.positionWrappingEnabled(false);
         algaeWristMotor.configure(algaeWristMotorconfig, ResetMode.kNoResetSafeParameters,
             PersistMode.kPersistParameters);
 
@@ -39,7 +47,7 @@ public class AlgaeReal implements AlgaeIO {
 
     @Override
     public void updateInputs(AlgaeInputs inputs) {
-
+        inputs.algaewristPosition = encoder.getPosition();
     }
 
     @Override
@@ -48,10 +56,21 @@ public class AlgaeReal implements AlgaeIO {
     }
 
     @Override
-    public void setAlgaeWristVolatage(double voltage) {
+    public void setAlgaeWristVoltage(double voltage) {
         algaeWristMotor.setVoltage(voltage);
     }
 
+    @Override
+    public void setPosition(double setPoint, double feedforward) {
+        wristController.setReference(setPoint, ControlType.kPosition, ClosedLoopSlot.kSlot0,
+            feedforward);
+    }
 
+    @Override
+    public void setPID(double kP, double kI, double kD) {
+        algaeWristMotorconfig.closedLoop.pidf(kP, kI, kD, 0.0, ClosedLoopSlot.kSlot0);
+        algaeWristMotor.configure(algaeWristMotorconfig, ResetMode.kNoResetSafeParameters,
+            PersistMode.kNoPersistParameters);
+    }
 
 }

@@ -1,7 +1,7 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
+import java.util.function.Supplier;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -11,16 +11,19 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot.RobotRunType;
 import frc.robot.subsystems.algae.Algae;
-import frc.robot.subsystems.algae.AlgaeIO;
 import frc.robot.subsystems.algae.AlgaeReal;
+import frc.robot.subsystems.coral.CoralIntake;
+import frc.robot.subsystems.coral.CoralIntakeReal;
 import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorReal;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveReal;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,13 +35,15 @@ public class RobotContainer {
     public static ShuffleboardTab mainDriverTab = Shuffleboard.getTab("Main Driver");
     /* Controllers */
     private final CommandXboxController driver = new CommandXboxController(Constants.driverID);
-    private final CommandXboxController operator = new CommandXboxController(Constants.operatorID);
+    private final CommandXboxController pitController =
+        new CommandXboxController(Constants.operatorID);
 
     // Initialize AutoChooser Sendable
     private final SendableChooser<String> autoChooser = new SendableChooser<>();
 
     /* Subsystems */
     private Swerve swerve;
+    private CoralIntake coralintake;
     private Elevator elevator;
     private Algae algae;
 
@@ -50,52 +55,89 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Wait 1 Second", "wait");
         switch (runtimeType) {
             case kReal:
+                // drivetrain = new Drivetrain(new DrivetrainReal());
                 swerve = new Swerve(new SwerveReal());
+                coralintake = new CoralIntake(new CoralIntakeReal());
                 elevator = new Elevator(new ElevatorReal());
                 algae = new Algae(new AlgaeReal());
                 break;
+
             case kSimulation:
                 // drivetrain = new Drivetrain(new DrivetrainSim() {});
 
                 break;
             default:
                 swerve = new Swerve(new SwerveIO() {});
-                elevator = new Elevator(new ElevatorIO() {});
-                algae = new Algae(new AlgaeIO() {});
+                // coralintake = new CoralIntake(new CoralIntakeIO() {});
+                // elevator = new Elevator(new ElevatorIO() {});
+                // algae = new Algae(new AlgaeIO() {});
         }
         swerve.setDefaultCommand(swerve.teleOPDrive(driver));
         // Configure the button bindings
-        configureButtonBindings();
-        setupDriver();
         configureOperatorBinds();
-    }
-
-    /**
-     * Use this method to define your button->command mappings. Buttons can be created by
-     * instantiating a {@link GenericHID} or one of its subclasses
-     * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-     * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
-        SmartDashboard.putNumber("height", 40);
-        SmartDashboard.putNumber("voltage", 0);
     }
 
     /**
      * operator configure binds
      */
     public void configureOperatorBinds() {
-        operator.x().whileTrue(algae.runAlgaeIntake());
-        operator.y().whileTrue(algae.runAlgaeOuttake());
-        operator.a().whileTrue(algae.algaeWristDown());
-        operator.b().whileTrue(algae.algaeWristUp());
+        pitController.povLeft().whileTrue(algae.setVoltage(() -> 0.5))
+            .onFalse(algae.setVoltage(() -> 0.0));
+        pitController.povRight().whileTrue(algae.setVoltage(() -> -0.5))
+            .onFalse(algae.setVoltage(() -> 0.0));
+        pitController.povUp().whileTrue(coralintake.wristVoltage(() -> 5))
+            .onFalse(coralintake.wristVoltage(() -> 0.0));
+        pitController.povDown().whileTrue(coralintake.wristVoltage(() -> -5))
+            .onFalse(coralintake.wristVoltage(() -> 0.0));
 
-        operator.povUp().whileTrue(elevator.setVoltage(() -> 5));
-        operator.povDown().whileTrue(elevator.setVoltage(() -> -5));
-    }
+        // RobotModeTriggers.autonomous().onTrue(
+        // algae.moveTo(() -> -680.0).withTimeout(1.0).andThen(algae.setVoltage(() -> 0.0)));
 
-    private void setupDriver() {
+        // driver.a().whileTrue(algae.moveTo(() -> -680.0)).onFalse(algae.setVoltage(() -> 0.0));
+
+        double l2height = 0.0;
+        double l3height = 0.85;
+        double feedheight = 0.0;
+        double l2angle = 225.0;
+        double l3angle = 225.0;
+        double transitangle = 105.0;
+        double feedangle = 54.0;
+
+        double algaehome = -500;
+        double algaeintaking = -785;
+
+        Trigger eitherTrigger = driver.leftTrigger().or(driver.rightTrigger());
+        Trigger eitherBumper = driver.leftBumper().or(driver.rightBumper());
+
+        Supplier<Command> transit = () -> elevator.moveTo(() -> feedheight)
+            .alongWith(coralintake.moveTo(() -> transitangle));
+
+        driver.leftBumper()
+            .whileTrue(elevator.moveTo(() -> l2height).alongWith(coralintake.moveTo(() -> l2angle)))
+            .onFalse(transit.get());
+        driver.rightBumper()
+            .whileTrue(elevator.moveTo(() -> l3height).alongWith(coralintake.moveTo(() -> l3angle)))
+            .onFalse(transit.get());
+        eitherTrigger.and(eitherBumper).whileTrue(coralintake.runCoralOuttake());
+        eitherTrigger.and(eitherBumper.negate()).whileTrue(elevator.moveTo(() -> feedheight)
+            .alongWith(coralintake.moveTo(() -> feedangle)).alongWith(coralintake.runCoralIntake()))
+            .onFalse(transit.get());
+        pitController.leftTrigger().or(pitController.rightTrigger())
+            .whileTrue(coralintake.runCoralOuttake());
+        pitController.a().whileTrue(coralintake.runCoralIntake());
+
+        Supplier<Command> algaeHome = () -> algae.moveTo(() -> algaehome).withTimeout(1.0)
+            .andThen(algae.setVoltage(() -> 0.0));
+        driver.a().whileTrue(algae.moveTo(() -> algaeintaking).alongWith(algae.runAlgaeIntake()))
+            .onFalse(algaeHome.get()
+                .alongWith(algae.runAlgaeIntake().withTimeout(1.0).andThen(algae.runAlgaeHold())));
+        driver.b().whileTrue(algae.runAlgaeOuttake());
         driver.y().onTrue(Commands.runOnce(() -> swerve.resetFieldRelativeOffset()));
+
+        RobotModeTriggers.autonomous()
+            .onTrue(swerve.run(() -> swerve.drive(new Translation2d(1.0, 0.0), 0.0, false))
+                .withTimeout(2.0)
+                .andThen(swerve.runOnce(() -> swerve.drive(Translation2d.kZero, 0.0, false))));
     }
 
     /**

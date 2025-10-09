@@ -96,6 +96,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
         driveconfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);
         this.driveController = mDriveMotor.getClosedLoopController();
+        driveconfig.smartCurrentLimit(40, 40);
         this.mDriveMotor.configure(driveconfig, ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
     }
@@ -117,7 +118,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
 
     @Override
     public void setDriveMotor(double v) {
-        driveController.setReference(v, SparkBase.ControlType.kVelocity);
+        mDriveMotor.setVoltage(v);
     }
 
     @Override

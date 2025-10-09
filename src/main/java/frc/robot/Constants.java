@@ -48,8 +48,8 @@ public final class Constants {
     public static final class AlgaeSubsystem {
         public static final int kalgaeIntakeMotorCanId = 29;
         public static final int kalgaeWristMotorCanId = 57;
-        public static final double INTAKE_VOLTAGE = 5.0;
-        public static final double OUTTAKE_VOLTAGE = -5.0;
+        public static final double INTAKE_VOLTAGE = -5.0;
+        public static final double OUTTAKE_VOLTAGE = 5.0;
     }
 
     /**
@@ -66,7 +66,7 @@ public final class Constants {
 
         /* Drive Motor PID Values */
 
-        public static final double driveKP = 0.001;
+        public static final double driveKP = 0.0005;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
@@ -82,8 +82,8 @@ public final class Constants {
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
 
-        public static final double maxSpeed = 4.0;
-        public static final double maxAngularVelocity = 9.0;
+        public static final double maxSpeed = 0.02;
+        public static final double maxAngularVelocity = 1.5;
 
         public static NavXComType navXID = NavXComType.kMXP_SPI;
         public static final boolean invertGyro = true;
@@ -158,5 +158,33 @@ public final class Constants {
 
 
     }
+
+    /**
+     * Coral Subsystem constants
+     */
+    public static final class CoralSubsystem {
+        // public static final int kWristMotorCanId = 0;
+        public static final int kIntakeMotorCanId = 22;
+        public static final int kcoralWristMotorCanId = 15;
+        public static final double INTAKE_VOLTAGE = 0.0;
+        public static final double OUTTAKE_VOLTAGE = 0.0;
+        public static final double KP = 0;
+        public static final double KI = 0;
+        public static final double KD = 0;
+        public static final double FF = 0;
+        public static final double MAX_ACCELERATION = 0;
+        public static final double MAX_VELOCITY = 0;
+        public static final double ALLOWED_CLOSED_LOOP_ERROR = 0;
+        public static final double MAX_ANGLE = 0;
+        public static final double MIN_ANGLE = 0;
+
+    }
+
+
+
+    // public static final class IntakeSetpoints {
+    // public static final double kForward = 0;
+    // public static final double kReverse = 0;
+    // }
 
 }

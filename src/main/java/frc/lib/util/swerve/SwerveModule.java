@@ -78,7 +78,7 @@ public class SwerveModule {
      * Reset to the absolute position
      */
     public void resetToAbsolute() {
-        double absolutePosition = getCANcoder().getRotations() - angleOffset.getRotations();
+        double absolutePosition = 0.0;
         io.setPositionAngleMotor(absolutePosition);
         inputs.angleMotorSelectedPosition = Rotations.of(absolutePosition);
     }

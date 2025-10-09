@@ -32,17 +32,17 @@ public class ElevatorReal implements ElevatorIO {
         elevatorConf.encoder
             .positionConversionFactor(Inches.of(60).in(Meters) / Rotations.of(190).in(Rotations));
         elevatorConf.closedLoop.pidf(100, 0, 0, 0.22, ClosedLoopSlot.kSlot0);
-        elevatorConf.closedLoop.maxMotion.maxAcceleration(0).maxVelocity(0)
-            .allowedClosedLoopError(0);
         elevatorMotor.configure(elevatorConf, ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
     }
 
-    public void setPosition(double position) {
-        controller.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    @Override
+    public void setPosition(double position, double ff) {
+        controller.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, ff);
+
     }
 
-
+    @Override
     public void setVoltage(double v) {
         elevatorMotor.setVoltage(v);
     }
@@ -52,5 +52,12 @@ public class ElevatorReal implements ElevatorIO {
         inputs.voltage = Volts.of(elevatorMotor.getBusVoltage());
         inputs.position = Meters.of(encoder.getPosition());
         inputs.rotation = Rotations.of(encoder.getPosition());
+    }
+
+    @Override
+    public void setPID(double kP, double kI, double kD, double kFF) {
+        elevatorConf.closedLoop.pidf(kP, kI, kD, kFF, ClosedLoopSlot.kSlot0);
+        elevatorMotor.configure(elevatorConf, ResetMode.kNoResetSafeParameters,
+            PersistMode.kNoPersistParameters);
     }
 }

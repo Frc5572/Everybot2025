@@ -1,69 +1,97 @@
 package frc.robot.subsystems.elevator;
 
-import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
-import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 /** Elevator subsystem */
 public class Elevator extends SubsystemBase {
 
-    ElevatorIO io;
-    ElevatorInputsAutoLogged inputs = new ElevatorInputsAutoLogged();
+    private final ElevatorIO io;
+    private final ElevatorInputsAutoLogged inputs = new ElevatorInputsAutoLogged();
+
+    private double kP = 20.0;
+    private double kI = 0.0;
+    private double kD = 0.0;
+    private double kFF = 0.0;
+    private double kS = 0.0;
+
+    private static final String kPString = "Elevator/kP";
+    private static final String kIString = "Elevator/kI";
+    private static final String kDString = "Elevator/kD";
+    private static final String kFString = "Elevator/kFF";
+    private static final String kSString = "Elevator/kS";
 
     /** Elevator initlizer */
     public Elevator(ElevatorIO io) {
         this.io = io;
         io.updateInputs(inputs);
+
+        SmartDashboard.putNumber(kPString, kP);
+        SmartDashboard.putNumber(kIString, kI);
+        SmartDashboard.putNumber(kDString, kD);
+        SmartDashboard.putNumber(kFString, kFF);
+        SmartDashboard.putNumber(kSString, kS);
+
+
+        io.setPID(kP, kI, kD, kFF);
     }
+
+    private boolean positionControl;
+    private double controlParam;
 
     @Override
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Elevator", inputs);
+
+        double newKp = SmartDashboard.getNumber(kPString, 0.0);
+        double newKd = SmartDashboard.getNumber(kIString, 0.0);
+        double newKi = SmartDashboard.getNumber(kDString, 0.0);
+        double newKff = SmartDashboard.getNumber(kFString, 0.0);
+        double newKs = SmartDashboard.getNumber(kSString, 0.0);
+
+        if (newKp != kP || newKd != kD || newKi != kI || newKff != kFF || newKs != kS) {
+            kP = newKp;
+            kI = newKi;
+            kD = newKd;
+            kFF = newKff;
+            kS = newKs;
+
+            io.setPID(newKp, newKi, newKd, newKff);
+        }
+
+        if (positionControl) {
+            double ff = Math.signum(inputs.position.in(Meters) - controlParam) * kS;
+            io.setPosition(controlParam, ff);
+        } else {
+            io.setVoltage(controlParam);
+        }
     }
 
-
-    public Command p0() {
-        return moveTo(() -> Constants.Elevator.P0);
+    private void setPosition(double position) {
+        this.positionControl = true;
+        this.controlParam = position;
     }
-
-    public Command p1() {
-        return moveTo(() -> Constants.Elevator.P1);
-    }
-
-    public Command p2() {
-        return moveTo(() -> Constants.Elevator.P2);
-    }
-
-    public Command p3() {
-        return moveTo(() -> Constants.Elevator.P3);
-    }
-
-
 
     /**
-     * sets height of elevator
-     *
-     * @param height desired height of elevator
-     * @return elevator height change
-     *
+     * Moves to given measurement
      */
-    public Command moveTo(Supplier<Distance> height) {
-        return runOnce(() -> {
-            Logger.recordOutput("Elevator/targetHeight", height.get().in(Meters));
-            io.setPosition(height.get().in(Meters));
-        }).andThen(Commands
-            .waitUntil(() -> Math.abs(inputs.position.in(Inches) - height.get().in(Inches)) < 1));
+    public Command moveTo(DoubleSupplier height) {
+        return this.run(() -> {
+            this.setPosition(height.getAsDouble());
+        });
+    }
+
+    private void setVoltage(double voltage) {
+        this.positionControl = false;
+        this.controlParam = voltage;
     }
 
     public Command setVoltage(DoubleSupplier v) {
-        return runEnd(() -> io.setVoltage(v.getAsDouble()), (() -> io.setVoltage(0)));
+        return runEnd(() -> this.setVoltage(v.getAsDouble()), (() -> this.setVoltage(0.0)));
     }
 }
