@@ -1,5 +1,6 @@
 package frc.robot;
 
+import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -9,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot.RobotRunType;
 import frc.robot.subsystems.algae.Algae;
 import frc.robot.subsystems.algae.AlgaeReal;
@@ -77,10 +80,10 @@ public class RobotContainer {
      * operator configure binds
      */
     public void configureOperatorBinds() {
-        pitController.povLeft().whileTrue(elevator.setVoltage(() -> 5))
-            .onFalse(elevator.setVoltage(() -> 0.0));
-        pitController.povRight().whileTrue(elevator.setVoltage(() -> -5))
-            .onFalse(elevator.setVoltage(() -> 0.0));
+        pitController.povLeft().whileTrue(algae.setVoltage(() -> 0.5))
+            .onFalse(algae.setVoltage(() -> 0.0));
+        pitController.povRight().whileTrue(algae.setVoltage(() -> -0.5))
+            .onFalse(algae.setVoltage(() -> 0.0));
         pitController.povUp().whileTrue(coralintake.wristVoltage(() -> 5))
             .onFalse(coralintake.wristVoltage(() -> 0.0));
         pitController.povDown().whileTrue(coralintake.wristVoltage(() -> -5))
@@ -94,24 +97,41 @@ public class RobotContainer {
         double l2height = 0.0;
         double l3height = 0.85;
         double feedheight = 0.0;
-        double l2angle = 227.0;
-        double l3angle = 227.0;
+        double l2angle = 225.0;
+        double l3angle = 225.0;
+        double transitangle = 105.0;
         double feedangle = 54.0;
+
+        double algaehome = -500;
+        double algaeintaking = -785;
+
+        Trigger eitherTrigger = driver.leftTrigger().or(driver.rightTrigger());
+        Trigger eitherBumper = driver.leftBumper().or(driver.rightBumper());
+
+        Supplier<Command> transit = () -> elevator.moveTo(() -> feedheight)
+            .alongWith(coralintake.moveTo(() -> transitangle));
 
         driver.leftBumper()
             .whileTrue(elevator.moveTo(() -> l2height).alongWith(coralintake.moveTo(() -> l2angle)))
-            .onFalse(
-                elevator.moveTo(() -> feedheight).alongWith(coralintake.moveTo(() -> feedangle)));
+            .onFalse(transit.get());
         driver.rightBumper()
             .whileTrue(elevator.moveTo(() -> l3height).alongWith(coralintake.moveTo(() -> l3angle)))
-            .onFalse(
-                elevator.moveTo(() -> feedheight).alongWith(coralintake.moveTo(() -> feedangle)));
-        driver.leftTrigger().or(driver.rightTrigger()).whileTrue(coralintake.runCoralOuttake());
-        driver.a().whileTrue(coralintake.runCoralIntake());
+            .onFalse(transit.get());
+        eitherTrigger.and(eitherBumper).whileTrue(coralintake.runCoralOuttake());
+        eitherTrigger.and(eitherBumper.negate()).whileTrue(elevator.moveTo(() -> feedheight)
+            .alongWith(coralintake.moveTo(() -> feedangle)).alongWith(coralintake.runCoralIntake()))
+            .onFalse(transit.get());
         pitController.leftTrigger().or(pitController.rightTrigger())
             .whileTrue(coralintake.runCoralOuttake());
         pitController.a().whileTrue(coralintake.runCoralIntake());
 
+        Supplier<Command> algaeHome = () -> algae.moveTo(() -> algaehome).withTimeout(1.0)
+            .andThen(algae.setVoltage(() -> 0.0));
+        RobotModeTriggers.autonomous().onTrue(algaeHome.get());
+        driver.a().whileTrue(algae.moveTo(() -> algaeintaking).alongWith(algae.runAlgaeIntake()))
+            .onFalse(algaeHome.get()
+                .alongWith(algae.runAlgaeIntake().withTimeout(1.0).andThen(algae.runAlgaeHold())));
+        driver.b().whileTrue(algae.runAlgaeOuttake());
         driver.y().onTrue(Commands.runOnce(() -> swerve.resetFieldRelativeOffset()));
     }
 

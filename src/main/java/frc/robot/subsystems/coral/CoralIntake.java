@@ -118,7 +118,7 @@ public class CoralIntake extends SubsystemBase {
      * @return Command
      */
     public Command runCoralIntake() {
-        return Commands.runEnd(() -> setCoralVoltage(4.5), () -> setCoralVoltage(0));
+        return Commands.runEnd(() -> setCoralVoltage(-4.5), () -> setCoralVoltage(0));
     }
 
     /**
@@ -127,7 +127,7 @@ public class CoralIntake extends SubsystemBase {
      * @return Command
      */
     public Command runCoralOuttake() {
-        return Commands.runEnd(() -> setCoralVoltage(-4.5), () -> setCoralVoltage(0));
+        return Commands.runEnd(() -> setCoralVoltage(4.5), () -> setCoralVoltage(0));
     }
 
 }

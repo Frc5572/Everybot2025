@@ -48,8 +48,8 @@ public final class Constants {
     public static final class AlgaeSubsystem {
         public static final int kalgaeIntakeMotorCanId = 29;
         public static final int kalgaeWristMotorCanId = 57;
-        public static final double INTAKE_VOLTAGE = 5.0;
-        public static final double OUTTAKE_VOLTAGE = -5.0;
+        public static final double INTAKE_VOLTAGE = -5.0;
+        public static final double OUTTAKE_VOLTAGE = 5.0;
     }
 
     /**

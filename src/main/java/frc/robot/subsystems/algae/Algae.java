@@ -108,6 +108,15 @@ public class Algae extends SubsystemBase {
     }
 
     /**
+     * Command for the intake set intake voltage
+     *
+     * @return Command
+     */
+    public Command runAlgaeHold() {
+        return Commands.run(() -> setAlgaeVoltage(-1.0));
+    }
+
+    /**
      * Command for the outake set outake voltage
      *
      * @return Command
