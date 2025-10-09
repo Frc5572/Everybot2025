@@ -1,6 +1,7 @@
 package frc.robot;
 
 import java.util.function.Supplier;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -127,12 +128,16 @@ public class RobotContainer {
 
         Supplier<Command> algaeHome = () -> algae.moveTo(() -> algaehome).withTimeout(1.0)
             .andThen(algae.setVoltage(() -> 0.0));
-        RobotModeTriggers.autonomous().onTrue(algaeHome.get());
         driver.a().whileTrue(algae.moveTo(() -> algaeintaking).alongWith(algae.runAlgaeIntake()))
             .onFalse(algaeHome.get()
                 .alongWith(algae.runAlgaeIntake().withTimeout(1.0).andThen(algae.runAlgaeHold())));
         driver.b().whileTrue(algae.runAlgaeOuttake());
         driver.y().onTrue(Commands.runOnce(() -> swerve.resetFieldRelativeOffset()));
+
+        RobotModeTriggers.autonomous()
+            .onTrue(swerve.run(() -> swerve.drive(new Translation2d(1.0, 0.0), 0.0, false))
+                .withTimeout(2.0)
+                .andThen(swerve.runOnce(() -> swerve.drive(Translation2d.kZero, 0.0, false))));
     }
 
     /**
