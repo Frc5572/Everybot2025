@@ -1,18 +1,13 @@
 package frc.robot;
 
-import java.util.function.Supplier;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot.RobotRunType;
 import frc.robot.subsystems.algae.Algae;
 import frc.robot.subsystems.algae.AlgaeReal;
@@ -99,9 +94,15 @@ public class RobotContainer {
         double l3height = 0.85;
         double feedheight = 0.0;
         double l2angle = 225.0;
+<<<<<<< HEAD
         double l3angle = 227.0;
         double transitangle = 105.0;
         double feedangle = 55.0;
+=======
+        double l3angle = 225.0;
+        double transitangle = 105.0;
+        double feedangle = 54.0;
+>>>>>>> main
 
         double algaehome = -500;
         double algaeintaking = -785;
