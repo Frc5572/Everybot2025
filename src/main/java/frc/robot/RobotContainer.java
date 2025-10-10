@@ -99,9 +99,9 @@ public class RobotContainer {
         double l3height = 0.85;
         double feedheight = 0.0;
         double l2angle = 225.0;
-        double l3angle = 225.0;
+        double l3angle = 227.0;
         double transitangle = 105.0;
-        double feedangle = 54.0;
+        double feedangle = 55.0;
 
         double algaehome = -500;
         double algaeintaking = -785;
@@ -135,7 +135,7 @@ public class RobotContainer {
         driver.y().onTrue(Commands.runOnce(() -> swerve.resetFieldRelativeOffset()));
 
         RobotModeTriggers.autonomous()
-            .onTrue(swerve.run(() -> swerve.drive(new Translation2d(1.0, 0.0), 0.0, false))
+            .onTrue(swerve.run(() -> swerve.drive(new Translation2d(-1.0, 0.0), 0.0, false))
                 .withTimeout(2.0)
                 .andThen(swerve.runOnce(() -> swerve.drive(Translation2d.kZero, 0.0, false))));
     }
