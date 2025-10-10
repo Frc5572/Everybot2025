@@ -99,9 +99,9 @@ public class RobotContainer {
         double l3height = 0.85;
         double feedheight = 0.0;
         double l2angle = 225.0;
-        double l3angle = 225.0;
+        double l3angle = 227.0;
         double transitangle = 105.0;
-        double feedangle = 54.0;
+        double feedangle = 55.0;
 
         double algaehome = -500;
         double algaeintaking = -785;
