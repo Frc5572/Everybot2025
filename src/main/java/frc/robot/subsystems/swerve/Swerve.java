@@ -46,20 +46,20 @@ public class Swerve extends SubsystemBase {
         this.swerveIO = swerveIO;
         fieldOffset = getGyroYaw().getDegrees();
         swerveMods = new SwerveModule[] {
-            swerveIO.createSwerveModule(0, Constants.Swerve.Mod0.driveMotorID,
-                Constants.Swerve.Mod0.angleMotorID, Constants.Swerve.Mod0.canCoderID,
-                Constants.Swerve.Mod0.angleOffset),
-            swerveIO.createSwerveModule(1, Constants.Swerve.Mod1.driveMotorID,
-                Constants.Swerve.Mod1.angleMotorID, Constants.Swerve.Mod1.canCoderID,
-                Constants.Swerve.Mod1.angleOffset),
-            swerveIO.createSwerveModule(2, Constants.Swerve.Mod2.driveMotorID,
-                Constants.Swerve.Mod2.angleMotorID, Constants.Swerve.Mod2.canCoderID,
-                Constants.Swerve.Mod2.angleOffset),
-            swerveIO.createSwerveModule(3, Constants.Swerve.Mod3.driveMotorID,
-                Constants.Swerve.Mod3.angleMotorID, Constants.Swerve.Mod3.canCoderID,
-                Constants.Swerve.Mod3.angleOffset)};
-        swerveOdometry = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics,
-            getGyroYaw(), getModulePositions(), new Pose2d());
+            // swerveIO.createSwerveModule(0, Constants.Swerve.Mod0.driveMotorID,
+            //     Constants.Swerve.Mod0.angleMotorID, Constants.Swerve.Mod0.canCoderID,
+            //     Constants.Swerve.Mod0.angleOffset),
+            // swerveIO.createSwerveModule(1, Constants.Swerve.Mod1.driveMotorID,
+            //     Constants.Swerve.Mod1.angleMotorID, Constants.Swerve.Mod1.canCoderID,
+            //     Constants.Swerve.Mod1.angleOffset),
+            // swerveIO.createSwerveModule(2, Constants.Swerve.Mod2.driveMotorID,
+            //     Constants.Swerve.Mod2.angleMotorID, Constants.Swerve.Mod2.canCoderID,
+            //     Constants.Swerve.Mod2.angleOffset),
+            // swerveIO.createSwerveModule(3, Constants.Swerve.Mod3.driveMotorID,
+            //     Constants.Swerve.Mod3.angleMotorID, Constants.Swerve.Mod3.canCoderID,
+            //     Constants.Swerve.Mod3.angleOffset)};
+        // swerveOdometry = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics,
+        //     getGyroYaw(), getModulePositions(), new Pose2d());
 
         swerveIO.updateInputs(inputs);
 

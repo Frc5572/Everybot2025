@@ -57,7 +57,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
 
         mDriveMotor = new SparkMax(driveMotorID, MotorType.kBrushless);
         mAngleMotor = new SparkMax(angleMotorID, MotorType.kBrushless);
-        angleEncoder = new CANcoder(cancoderID);
+        // angleEncoder = new CANcoder(cancoderID);
         angleMotorEncoder = mAngleMotor.getEncoder();
         driveMotorEncoder = mDriveMotor.getEncoder();
 
