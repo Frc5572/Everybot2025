@@ -57,15 +57,15 @@ public class SwerveModuleReal implements SwerveModuleIO {
 
         mDriveMotor = new SparkMax(driveMotorID, MotorType.kBrushless);
         mAngleMotor = new SparkMax(angleMotorID, MotorType.kBrushless);
-        angleEncoder = new CANcoder(cancoderID);
+        // angleEncoder = new CANcoder(cancoderID);
         angleMotorEncoder = mAngleMotor.getEncoder();
         driveMotorEncoder = mDriveMotor.getEncoder();
 
-        configAngleEncoder();
+        // configAngleEncoder();
         configAngleMotor();
         configDriveMotor();
 
-        absolutePositionAngleEncoder = angleEncoder.getAbsolutePosition();
+        // absolutePositionAngleEncoder = angleEncoder.getAbsolutePosition();
     }
 
     private void configAngleMotor() {
@@ -101,12 +101,12 @@ public class SwerveModuleReal implements SwerveModuleIO {
             PersistMode.kPersistParameters);
     }
 
-    private void configAngleEncoder() {
-        /* Angle Encoder Config */
-        swerveCANcoderConfig.MagnetSensor.SensorDirection = Constants.Swerve.cancoderInvert;
-        swerveCANcoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
-        angleEncoder.getConfigurator().apply(swerveCANcoderConfig);
-    }
+    // private void configAngleEncoder() {
+    // /* Angle Encoder Config */
+    // // swerveCANcoderConfig.MagnetSensor.SensorDirection = Constants.Swerve.cancoderInvert;
+    // // swerveCANcoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
+    // // angleEncoder.getConfigurator().apply(swerveCANcoderConfig);
+    // }
 
 
 
@@ -127,7 +127,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
         inputs.driveMotorSelectedPosition = Rotations.of(driveMotorEncoder.getPosition());
         inputs.driveMotorSelectedSensorVelocity = RPM.of(driveMotorEncoder.getVelocity());
         inputs.angleMotorSelectedPosition = Rotations.of(angleMotorEncoder.getPosition());
-        inputs.absolutePositionAngleEncoder = absolutePositionAngleEncoder.getValue();
+        inputs.absolutePositionAngleEncoder = Rotations.of(0);
     }
 
 
