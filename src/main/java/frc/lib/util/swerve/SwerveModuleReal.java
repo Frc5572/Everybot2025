@@ -124,9 +124,9 @@ public class SwerveModuleReal implements SwerveModuleIO {
     @Override
     public void updateInputs(SwerveModuleInputs inputs) {
         BaseStatusSignal.refreshAll(absolutePositionAngleEncoder);
-        inputs.driveMotorSelectedPosition = Rotations.of(0);
-        inputs.driveMotorSelectedSensorVelocity = RPM.of(0);
-        inputs.angleMotorSelectedPosition = Rotations.of(0);
+        inputs.driveMotorSelectedPosition = Rotations.of(driveMotorEncoder.getPosition());
+        inputs.driveMotorSelectedSensorVelocity = RPM.of(driveMotorEncoder.getVelocity());
+        inputs.angleMotorSelectedPosition = Rotations.of(angleMotorEncoder.getPosition());
         inputs.absolutePositionAngleEncoder = Rotations.of(0);
     }
 
