@@ -92,10 +92,11 @@ public final class Constants {
         public static final boolean driveMotorInvert = true;
 
         /* Angle Encoder Invert */
-        public static final SensorDirectionValue cancoderInvert = SensorDirectionValue.CounterClockwise_Positive;
+        public static final SensorDirectionValue cancoderInvert =
+            SensorDirectionValue.CounterClockwise_Positive;
 
-        public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
-                new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+        public static final SwerveDriveKinematics swerveKinematics =
+            new SwerveDriveKinematics(new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
                 new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
                 new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
                 new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
