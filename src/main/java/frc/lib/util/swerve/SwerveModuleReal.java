@@ -10,17 +10,16 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import frc.robot.Constants;
+import com.revrobotics.ResetMode;
+import com.revrobotics.PersistMode;
 
 /**
  * Swerve Module Real
@@ -75,7 +74,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
         angleconfig.inverted(Constants.Swerve.angleMotorInvert).idleMode(IdleMode.kBrake)
             .voltageCompensation(12);
         // /* PID Config */
-        angleconfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        angleconfig.closedLoop.feedbackSensor(com.revrobotics.spark.FeedbackSensor.kPrimaryEncoder)
             .pid(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD)
             .positionWrappingEnabled(true).positionWrappingMinInput(-0.5)
             .positionWrappingMaxInput(0.5)
@@ -93,7 +92,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
         driveconfig.inverted(Constants.Swerve.driveMotorInvert).idleMode(IdleMode.kBrake);
         driveconfig.encoder.positionConversionFactor(1.0 / Constants.Swerve.driveGearRatio)
             .velocityConversionFactor(1.0 / Constants.Swerve.driveGearRatio);
-        driveconfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        driveconfig.closedLoop.feedbackSensor(com.revrobotics.spark.FeedbackSensor.kPrimaryEncoder)
             .pid(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);
         this.driveController = mDriveMotor.getClosedLoopController();
         driveconfig.smartCurrentLimit(40, 40);
@@ -112,7 +111,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
 
     @Override
     public void setAngleMotor(double v) {
-        angleController.setReference(v, SparkBase.ControlType.kPosition);
+        angleController.setSetpoint(v, SparkBase.ControlType.kPosition);
     }
 
 

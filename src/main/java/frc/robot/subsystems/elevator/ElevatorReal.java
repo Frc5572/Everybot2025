@@ -7,13 +7,13 @@ import static edu.wpi.first.units.Units.Volts;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 
 /** Elevator Real layer */
 public class ElevatorReal implements ElevatorIO {
@@ -31,14 +31,14 @@ public class ElevatorReal implements ElevatorIO {
         encoder.setPosition(0.0);
         elevatorConf.encoder
             .positionConversionFactor(Inches.of(60).in(Meters) / Rotations.of(190).in(Rotations));
-        elevatorConf.closedLoop.pidf(100, 0, 0, 0.22, ClosedLoopSlot.kSlot0);
+        elevatorConf.closedLoop.pid(100, 0, 0, ClosedLoopSlot.kSlot0);
         elevatorMotor.configure(elevatorConf, ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
     }
 
     @Override
     public void setPosition(double position, double ff) {
-        controller.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, ff);
+        controller.setSetpoint(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, ff);
 
     }
 
@@ -56,7 +56,7 @@ public class ElevatorReal implements ElevatorIO {
 
     @Override
     public void setPID(double kP, double kI, double kD, double kFF) {
-        elevatorConf.closedLoop.pidf(kP, kI, kD, kFF, ClosedLoopSlot.kSlot0);
+        elevatorConf.closedLoop.pid(kP, kI, kD, ClosedLoopSlot.kSlot0);
         elevatorMotor.configure(elevatorConf, ResetMode.kNoResetSafeParameters,
             PersistMode.kNoPersistParameters);
     }
