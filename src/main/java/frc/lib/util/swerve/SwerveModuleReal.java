@@ -5,8 +5,6 @@ import static edu.wpi.first.units.Units.Rotations;
 import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
@@ -28,10 +26,8 @@ public class SwerveModuleReal implements SwerveModuleIO {
 
     private SparkMax mDriveMotor;
     private SparkMax mAngleMotor;
-    private CANcoder angleEncoder;
     public RelativeEncoder angleMotorEncoder;
     public RelativeEncoder driveMotorEncoder;
-    private CANcoderConfiguration swerveCANcoderConfig = new CANcoderConfiguration();
 
     private StatusSignal<Angle> absolutePositionAngleEncoder;
 
@@ -99,15 +95,6 @@ public class SwerveModuleReal implements SwerveModuleIO {
         this.mDriveMotor.configure(driveconfig, ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
     }
-
-    // private void configAngleEncoder() {
-    // /* Angle Encoder Config */
-    // // swerveCANcoderConfig.MagnetSensor.SensorDirection = Constants.Swerve.cancoderInvert;
-    // // swerveCANcoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
-    // // angleEncoder.getConfigurator().apply(swerveCANcoderConfig);
-    // }
-
-
 
     @Override
     public void setAngleMotor(double v) {
