@@ -3,8 +3,6 @@ package frc.lib.util.swerve;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Rotations;
 import org.littletonrobotics.junction.Logger;
-import com.ctre.phoenix6.BaseStatusSignal;
-import com.ctre.phoenix6.StatusSignal;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
@@ -14,7 +12,6 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.Angle;
 import frc.robot.Constants;
 import com.revrobotics.ResetMode;
 import com.revrobotics.PersistMode;
@@ -28,8 +25,6 @@ public class SwerveModuleReal implements SwerveModuleIO {
     private SparkMax mAngleMotor;
     public RelativeEncoder angleMotorEncoder;
     public RelativeEncoder driveMotorEncoder;
-
-    private StatusSignal<Angle> absolutePositionAngleEncoder;
 
     private SparkMaxConfig angleconfig = new SparkMaxConfig();
     private SparkMaxConfig driveconfig = new SparkMaxConfig();
@@ -109,7 +104,6 @@ public class SwerveModuleReal implements SwerveModuleIO {
 
     @Override
     public void updateInputs(SwerveModuleInputs inputs) {
-        BaseStatusSignal.refreshAll(absolutePositionAngleEncoder);
         inputs.driveMotorSelectedPosition = Rotations.of(driveMotorEncoder.getPosition());
         inputs.driveMotorSelectedSensorVelocity = RPM.of(driveMotorEncoder.getVelocity());
         inputs.angleMotorSelectedPosition = Rotations.of(angleMotorEncoder.getPosition());
